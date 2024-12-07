@@ -1,0 +1,26 @@
+<div class="slide-container swiper">
+  <div class="slide-content">
+      <div class="card-wrapper swiper-wrapper">
+          <div 
+              *ngFor="let card of cards" 
+              class="card swiper-slide" 
+              [attr.data-bg]="card.bgColor"
+          >
+              <div class="image-content">
+                  <span class="overlay"></span>
+                  <div class="card-image">
+                      <img [src]="card.image" alt="" class="card-img">
+                  </div>
+              </div>
+              <div class="card-content">
+                  <h2 class="name">{{ card.name }}</h2>
+                  <p class="description">{{ card.description }}</p>
+                  <button class="button">View More</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="swiper-button-next swiper-navBtn"></div>
+  <div class="swiper-button-prev swiper-navBtn"></div>
+  <div class="swiper-pagination"></div>
+</div>
