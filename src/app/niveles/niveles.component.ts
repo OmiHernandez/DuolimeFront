@@ -12,6 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class NivelesComponent {
   categoria: string | null = null;
+  backgroundStyle = '';
 
   constructor(private route: ActivatedRoute,
     private router: Router
@@ -23,6 +24,7 @@ export class NivelesComponent {
     this.route.paramMap.subscribe(params => {
       this.categoria = params.get('categoria');
       console.log(this.categoria)
+      this.updateBackground()
     });
   }
 
@@ -40,4 +42,46 @@ export class NivelesComponent {
   navigateToSlide(categoria:any,level:any){
     this.router.navigate(["/juego", categoria,level]);
   }
+
+  updateBackground(): void {
+    switch (this.categoria) {
+      case 'Banderas':
+        this.backgroundStyle = 'linear-gradient(to bottom, #ff3200, #ff8b00)';
+        break;
+      case 'Series':
+        this.backgroundStyle = 'linear-gradient(to bottom, #ff9700, #ffdc00)';
+        break;
+      case 'Películas':
+        this.backgroundStyle = 'linear-gradient(to bottom, #ffd500, #a6ff00)';
+        break;
+      case 'Cultura pop':
+        this.backgroundStyle = 'linear-gradient(to bottom, #a2da00, #00da1e)';
+        break;
+      case 'Historia':
+        this.backgroundStyle = 'linear-gradient(to bottom, #1ada00, #00da8e)';
+        break;
+      case 'Arte':
+        this.backgroundStyle = 'linear-gradient(to bottom, #00da70, #00dad0)';
+        break;
+      case 'Geografía':
+        this.backgroundStyle = 'linear-gradient(to bottom, #00dac6, #006dda)';
+        break;
+      case 'Anime':
+        this.backgroundStyle = 'linear-gradient(to bottom, #0081da, #2400da)';
+        break;
+      case 'Ciencia':
+        this.backgroundStyle = 'linear-gradient(to bottom, #ac64e1, #e164d9)';
+        break;
+      case 'Libros':
+        this.backgroundStyle = 'linear-gradient(to bottom, #b200da, #da00a5)';
+        break;
+      case 'Videojuegos':
+        this.backgroundStyle = 'linear-gradient(to bottom, #f000d3, #f0006d)';
+        break;
+      case 'Música':
+        this.backgroundStyle = 'linear-gradient(to bottom, #f0007f, #f00000)';
+        break;
+    }
+  }
+
 }
