@@ -21,8 +21,18 @@ body{
 }
 .slide-content{
   margin: 0 40px;
+  border: solid 5px #242568;
+  padding: 15px;
   overflow: hidden;
-  border-radius: 25px;
+  border-radius: 5px;
+  background-color: #474493;
+  text-align: center;
+  height: 45vh;
+}
+.slide-content img {
+  width: 50%;
+  height: auto;
+  margin: 20px 0;
 }
 .card{
   border-radius: 25px;
@@ -78,6 +88,10 @@ body{
   border-radius: 50%;
   border: 4px solid #4070F4;
 }
+.slide-name {
+  margin-top: 20px;
+  color: white;
+}
 .name{
   font-size: 18px;
   font-weight: 500;
@@ -130,7 +144,9 @@ body{
 
 @media screen and (max-width: 768px) {
   .slide-content{
-    margin: 0 10px;
+    width: 50%;
+    margin: 0 auto;
+    /* margin: 0 10px; */
   }
   .swiper-navBtn{
     display: none;

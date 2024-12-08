@@ -1,0 +1,85 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #3a3d98, #e4685d);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.container {
+    width: 90%;
+    max-width: 400px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 20px;
+    position: relative;
+}
+.header {
+    background-color: #d18f2b;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+.level {
+    margin: 20px 0;
+}
+.level span {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    margin: 5px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+.level span.unlocked:nth-child(1) { background-color: #d9534f; }
+.level span.unlocked:nth-child(2) { background-color: #9b59b6; }
+.level span.unlocked:nth-child(3) { background-color: #5bc0de; }
+.level span.unlocked:nth-child(4) { background-color: #04bb93; }
+.level span.unlocked:nth-child(5) { background-color: #f0ad4e; }
+.level span.unlocked:nth-child(6) { background-color: #5cb85c; }
+.level span.unlocked:nth-child(7) { background-color: #4cae4c; }
+.level span.unlocked:nth-child(8) { background-color: #8495fa; }
+.level span.unlocked:nth-child(9) { background-color: #ac2aa1; }
+.level span.unlocked:nth-child(10) { background-color: #ff71b8; }
+
+.level span:not(.unlocked) {
+  background-color: #696969; /* Rojo para bloqueados */
+  color: white;
+  cursor: not-allowed;
+}
+.button {
+    display: block;
+    width: 80%;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 18px;
+    text-decoration: none;
+    color: white;
+}
+.button.new-game {
+    background-color: #337ab7;
+}
+.button.guardian-mode {
+    background-color: #6c757d;
+    position: relative;
+}
+.button.guardian-mode i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.footer {
+    height: 50px;
+    background-color: #d18f2b;
+    border-radius: 0 0 10px 10px;
+}

@@ -24,46 +24,88 @@ export class CategoriesComponent implements AfterViewInit {
 
   slides = [
     {
-      name: 'Mohamed Yousef',
-      description: 'The lorem text the section that contains header with having open functionality. Lorem dolor sit amet consectetur adipisicing elit.',
-      image: 'https://tinypic.host/images/2022/12/19/img_avatar.png',
-      bgColor: 'orange',
-      parametro:"1"
+      name: 'Banderas',
+      description: 'Jujuy',
+      image: '../assets/img/vi.jpg',
+      bgColor: '#ff3200',
+      parametro:"Banderas"
     },
     {
-      name: 'John Doe',
-      description: 'Sample description for John Doe. Lorem ipsum dolor sit amet.',
-      image: 'https://tinypic.host/images/2022/12/19/img_avatar.png',
-      bgColor: 'purple',
-      parametro:"2"
+      name: 'Series',
+      description: 'Jujuy',
+      image: '../assets/img/vi.jpg',
+      bgColor: '#ff9700',
+      parametro:"Series"
     },
     {
-      name: 'Jane Smith',
-      description: 'Sample description for Jane Smith. Lorem ipsum dolor sit amet.',
-      image: 'https://tinypic.host/images/2022/12/19/img_avatar.png',
-      bgColor: 'green',
-      parametro:"3"
+      name: 'Películas',
+      description: 'Jujuy',
+      image: '../assets/img/vi.jpg',
+      bgColor: '#ffd500',
+      parametro:"Películas"
     },
     {
-      name: 'Mohamed Yousef',
-      description: 'The lorem text the section that contains header with having open functionality. Lorem dolor sit amet consectetur adipisicing elit.',
-      image: 'https://tinypic.host/images/2022/12/19/img_avatar.png',
-      bgColor: 'orange',
-      parametro:"4"
+      name: 'Cultura pop',
+      description: 'Jujuy',
+      image: '../assets/img/vi.jpg',
+      bgColor: '#a2da00',
+      parametro:"Cultura pop"
     },
     {
-      name: 'John Doe',
-      description: 'Sample description for John Doe. Lorem ipsum dolor sit amet.',
-      image: 'https://tinypic.host/images/2022/12/19/img_avatar.png',
-      bgColor: 'purple',
-      parametro:"5"
+      name: 'Historia',
+      description: 'Jujuy',
+      image: '../assets/img/vi.jpg',
+      bgColor: '#1ada00',
+      parametro:"Historia"
     },
     {
-      name: 'Jane Smith',
-      description: 'Sample description for Jane Smith. Lorem ipsum dolor sit amet.',
-      image: 'https://tinypic.host/images/2022/12/19/img_avatar.png',
-      bgColor: 'green',
-      parametro:"6"
+      name: 'Arte',
+      description: 'Jujuy',
+      image: '../assets/img/vi.jpg',
+      bgColor: '#00da70',
+      parametro:"Arte"
+    },
+    {
+      name: 'Geografía',
+      description: 'Jujuy',
+      image: '../assets/img/vi.jpg',
+      bgColor: '#00dac6',
+      parametro:"Geografía"
+    },
+    {
+      name: 'Anime',
+      description: 'Jujuy',
+      image: '../assets/img/vi.jpg',
+      bgColor: '#0081da',
+      parametro:"Anime"
+    },
+    {
+      name: 'Ciencia',
+      description: 'Jujuy',
+      image: '../assets/img/vi.jpg',
+      bgColor: '#ac64e1',
+      parametro:"Ciencia"
+    },
+    {
+      name: 'Libros',
+      description: 'Jujuy',
+      image: '../assets/img/vi.jpg',
+      bgColor: '#b200da',
+      parametro:"Libros"
+    },
+    {
+      name: 'Videojuegos',
+      description: 'Jujuy',
+      image: '../assets/img/vi.jpg',
+      bgColor: '#f000d3',
+      parametro:"Videojuegos"
+    },
+    {
+      name: 'Música',
+      description: 'Jujuy',
+      image: '../assets/img/vi.jpg',
+      bgColor: '#f0007f',
+      parametro:"Música"
     }
   ];
   
@@ -103,9 +145,9 @@ export class CategoriesComponent implements AfterViewInit {
       this.swiper.nativeElement.initialize();
     }
   
-    navigateToSlide(id:any){
-      this.router.navigate(["/niveles", id]);
+    navigateToSlide(categoria:any){
+      this.router.navigate(["/niveles", categoria]);
     }
 
-    
+
 }
