@@ -1,1 +1,30 @@
-<p>juego works!</p>
+<div class="juego-container" *ngIf="!juegoTerminado && preguntas.length > 0; else finDelJuego">
+    <h2>Pregunta {{ currentIndex + 1 }} de {{ preguntas.length }}</h2>
+    <p>{{ preguntas[currentIndex]?.pregunta }}</p>
+  
+    <div class="botones-respuesta">
+      <button 
+        (click)="seleccionarRespuesta('V')" 
+        [class.selected]="respuestaSeleccionada === 'V'">
+        Verdadero
+      </button>
+      <button 
+        (click)="seleccionarRespuesta('F')" 
+        [class.selected]="respuestaSeleccionada === 'F'">
+        Falso
+      </button>
+    </div>
+  </div>
+  
+  <ng-template #finDelJuego>
+    <div class="juego-container">
+      <h2>¡Juego terminado!</h2>
+      <p>Respuestas correctas: {{ respuestasCorrectas }} de {{ preguntas.length }}</p>
+      <button (click)="router.navigate(['/home'])">Volver al inicio</button>
+    </div>
+  </ng-template>
+  
+  <ng-template #loading>
+    <p>Cargando preguntas...</p>
+  </ng-template>
+  
