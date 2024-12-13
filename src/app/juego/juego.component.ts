@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './juego.component.css'
 })
 export class JuegoComponent implements OnInit{
-  categoria: string | null = null;
+  /*categoria: string | null = null;
   level: string | null = null;
   preguntas: any[] = []; // Lista de preguntas
   currentIndex: number = 0; // Índice de la pregunta actual
@@ -61,6 +61,67 @@ export class JuegoComponent implements OnInit{
     } else {
       // Finaliza el juego
       this.juegoTerminado = true;
+    }
+  }*/
+
+  preguntas = [
+    { texto: 'Lotso es el nombre del títere de Jigsaw en "Saw".', respuesta: 'F' },
+    { texto: 'El agua hierve a 100°C a nivel del mar.', respuesta: 'V' },
+    // Agrega más preguntas aquí...
+  ];
+  indicePregunta = 0;
+  tiempoRestante = 20;
+  progreso = 0;
+  respuestasCorrectas = 0;
+  intervalo: any;
+  mostrarFeedback = false;
+  esRespuestaCorrecta = false;
+
+  ngOnInit() {
+    this.iniciarTemporizador();
+  }
+
+  iniciarTemporizador() {
+    this.intervalo = setInterval(() => {
+      if (this.tiempoRestante > 0) {
+        this.tiempoRestante--;
+      } else {
+        this.registrarRespuesta(false); // Marca como incorrecta por tiempo
+      }
+    }, 1000);
+  }
+
+  responder(opcion: 'F' | 'V') {
+    const respuestaCorrecta = this.preguntas[this.indicePregunta].respuesta === opcion;
+    this.registrarRespuesta(respuestaCorrecta);
+  }
+
+  registrarRespuesta(esCorrecta: boolean) {
+    this.mostrarFeedback = true;
+    this.esRespuestaCorrecta = esCorrecta;
+
+    if (esCorrecta) {
+      this.respuestasCorrectas++;
+    }
+
+    clearInterval(this.intervalo);
+
+    setTimeout(() => {
+      this.mostrarFeedback = false;
+      this.pasoSiguiente();
+    }, 1000); // Muestra el feedback por 1 segundo
+  }
+
+  pasoSiguiente() {
+    this.indicePregunta++;
+    this.progreso = (this.indicePregunta / this.preguntas.length) * 100;
+
+    if (this.indicePregunta < this.preguntas.length) {
+      this.tiempoRestante = 20;
+      this.iniciarTemporizador();
+    } else {
+      // Quiz terminado
+      alert(`¡Quiz finalizado! Respuestas correctas: ${this.respuestasCorrectas}`);
     }
   }
 }
