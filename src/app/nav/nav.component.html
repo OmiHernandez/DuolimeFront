@@ -9,7 +9,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" href="home">Iniciar sesión</a>
+          <a class="nav-link active" href="register">Registrarse</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="loggin">Iniciar sesión</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Configuración</a>
@@ -21,6 +24,14 @@
           <a class="nav-link" href="#">-</a>
         </li>
       </ul>
+      <!-- Mostrar el nombre de usuario o "Bienvenido, Invitado" -->
+      <span class="navbar-text">
+        Bienvenido, {{ username || 'Invitado' }}
+      </span>
+      <!-- Mostrar el botón de cerrar sesión solo si hay un usuario -->
+      <button *ngIf="username" (click)="logout()" class="btn btn-outline-danger ms-3">
+        Cerrar sesión
+      </button>
     </div>
   </div>
 </nav>
