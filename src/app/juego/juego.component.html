@@ -1,20 +1,3 @@
-<!-- <div class="juego-container" *ngIf="!juegoTerminado && preguntas.length > 0; else finDelJuego">
-    <h2>Pregunta {{ currentIndex + 1 }} de {{ preguntas.length }}</h2>
-    <p>{{ preguntas[currentIndex]?.pregunta }}</p>
-  
-    <div class="botones-respuesta">
-      <button 
-        (click)="seleccionarRespuesta('V')" 
-        [class.selected]="respuestaSeleccionada === 'V'">
-        Verdadero
-      </button>
-      <button 
-        (click)="seleccionarRespuesta('F')" 
-        [class.selected]="respuestaSeleccionada === 'F'">
-        Falso
-      </button>
-    </div>
-  </div>
   
   <ng-template #finDelJuego>
     <div class="juego-container">
@@ -27,40 +10,60 @@
   <ng-template #loading>
     <p>Cargando preguntas...</p>
   </ng-template>
-   -->
 
-<section>
-  <div class="container">
-    <div class="progress-bar">
+
+<section *ngIf="!juegoTerminado; else finDelJuego">
+  <div *ngIf="preguntas.length > 0; else loading">
+    <div class="container">
+      <div class="progress-bar">
+        <div
+          class="progress"
+          [ngStyle]="{ width: progreso + '%' }"
+        ></div>
+      </div>
+  
+      <div class="header">
+        <div class="pause">
+          <i class="fa-solid fa-pause" style="color: #ffffff;"></i>
+        </div>
+        <div class="timer">Tiempo: <span>{{ tiempoRestante }}</span> segundos</div>
+      </div>
+  
+      <div class="content">
+        <div class="card">
+          <p>{{ preguntas[indicePregunta]?.pregunta }}</p>
+        </div>
+        <div class="buttons">
+          <button class="false" (click)="responder('F')">FALSO</button>
+          <button class="true" (click)="responder('V')">CIERTO</button>
+        </div>
+      </div>
+  
       <div
-        class="progress"
-        [ngStyle]="{ width: progreso + '%' }"
-      ></div>
-    </div>
-
-    <div class="header">
-      <div class="pause">
-        <i class="fa-solid fa-pause" style="color: #ffffff;"></i>
+        class="feedback"
+        *ngIf="mostrarFeedback"
+        [ngClass]="{ correcto: esRespuestaCorrecta, incorrecto: !esRespuestaCorrecta }"
+      >
+        <p>{{ esRespuestaCorrecta ? '¡Correcto!' : 'Incorrecto' }}</p>
       </div>
-      <div class="timer">Tiempo: <span>{{ tiempoRestante }}</span> segundos</div>
-    </div>
-
-    <div class="content">
-      <div class="card">
-        <p>{{ preguntas[indicePregunta]?.texto }}</p>
-      </div>
-      <div class="buttons">
-        <button class="false" (click)="responder('F')">FALSO</button>
-        <button class="true" (click)="responder('V')">CIERTO</button>
-      </div>
-    </div>
-
-    <div
-      class="feedback"
-      *ngIf="mostrarFeedback"
-      [ngClass]="{ correcto: esRespuestaCorrecta, incorrecto: !esRespuestaCorrecta }"
-    >
-      <p>{{ esRespuestaCorrecta ? '¡Correcto!' : 'Incorrecto' }}</p>
     </div>
   </div>
 </section>
+
+<!-- <div class="juego-container" *ngIf="!juegoTerminado && preguntas.length > 0; else finDelJuego">
+  <h2>Pregunta {{ currentIndex + 1 }} de {{ preguntas.length }}</h2>
+  <p>{{ preguntas[currentIndex]?.pregunta }}</p>
+
+  <div class="botones-respuesta">
+    <button 
+      (click)="seleccionarRespuesta('V')" 
+      [class.selected]="respuestaSeleccionada === 'V'">
+      Verdadero
+    </button>
+    <button 
+      (click)="seleccionarRespuesta('F')" 
+      [class.selected]="respuestaSeleccionada === 'F'">
+      Falso
+    </button>
+  </div>
+</div> -->
