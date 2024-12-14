@@ -1,12 +1,14 @@
-  
-  <ng-template #finDelJuego>
-    <div class="juego-container">
-      <h2>¡Juego terminado!</h2>
+
+<ng-template #finDelJuego>
+  <div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="text-center p-5 border rounded shadow-lg bg-light">
+      <h2 class="text-primary">¡Juego terminado!</h2>
       <p>Respuestas correctas: {{ respuestasCorrectas }} de {{ preguntas.length }}</p>
-      <button (click)="router.navigate(['/home'])">Volver al inicio</button>
+      <button (click)="router.navigate(['/home'])" class="btn btn-primary mt-3">Volver al inicio</button>
     </div>
-  </ng-template>
-  
+  </div>
+</ng-template>
+
   <ng-template #loading>
     <p>Cargando preguntas...</p>
   </ng-template>
@@ -21,14 +23,14 @@
           [ngStyle]="{ width: progreso + '%' }"
         ></div>
       </div>
-  
+
       <div class="header">
         <div class="pause">
           <i class="fa-solid fa-pause" style="color: #ffffff;"></i>
         </div>
         <div class="timer">Tiempo: <span>{{ tiempoRestante }}</span> segundos</div>
       </div>
-  
+
       <div class="content">
         <div class="card">
           <p>{{ preguntas[indicePregunta]?.pregunta }}</p>
@@ -38,7 +40,7 @@
           <button class="true" (click)="responder('V')">CIERTO</button>
         </div>
       </div>
-  
+
       <div
         class="feedback"
         *ngIf="mostrarFeedback"
@@ -55,13 +57,13 @@
   <p>{{ preguntas[currentIndex]?.pregunta }}</p>
 
   <div class="botones-respuesta">
-    <button 
-      (click)="seleccionarRespuesta('V')" 
+    <button
+      (click)="seleccionarRespuesta('V')"
       [class.selected]="respuestaSeleccionada === 'V'">
       Verdadero
     </button>
-    <button 
-      (click)="seleccionarRespuesta('F')" 
+    <button
+      (click)="seleccionarRespuesta('F')"
       [class.selected]="respuestaSeleccionada === 'F'">
       Falso
     </button>

@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, ViewChild, ElementRef } from '@angular/core';
-import { register } from 'swiper/element/bundle';
+import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
-register();
-// register Swiper custom elements
+import { register } from 'swiper/element/bundle';
+// Registrar Swiper custom elements
 register();
 
 @Component({
@@ -13,110 +13,23 @@ register();
   imports: [CommonModule, RouterModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './categories.component.html',
-  styleUrl: './categories.component.css'
+  styleUrls: ['./categories.component.css']
 })
-export class CategoriesComponent implements AfterViewInit {
-  
+export class CategoriesComponent implements AfterViewInit, OnInit {
+  @ViewChild('swiper') swiper!: ElementRef<any>;
 
-  @ViewChild('swiper') swiper!: ElementRef<any>
+  constructor(private http: HttpClient, private router: Router) {}
 
-  constructor(private router: Router) {}
+  slides: any[] = [];
 
-  slides = [
-    {
-      name: 'Banderas',
-      description: 'Jujuy',
-      image: '../assets/img/vi.jpg',
-      bgColor: '#ff3200',
-      parametro:"Banderas"
-    },
-    {
-      name: 'Series',
-      description: 'Jujuy',
-      image: '../assets/img/vi.jpg',
-      bgColor: '#ff9700',
-      parametro:"Series"
-    },
-    {
-      name: 'Películas',
-      description: 'Jujuy',
-      image: '../assets/img/vi.jpg',
-      bgColor: '#ffd500',
-      parametro:"Películas"
-    },
-    {
-      name: 'Cultura pop',
-      description: 'Jujuy',
-      image: '../assets/img/vi.jpg',
-      bgColor: '#a2da00',
-      parametro:"Cultura pop"
-    },
-    {
-      name: 'Historia',
-      description: 'Jujuy',
-      image: '../assets/img/vi.jpg',
-      bgColor: '#1ada00',
-      parametro:"Historia"
-    },
-    {
-      name: 'Arte',
-      description: 'Jujuy',
-      image: '../assets/img/vi.jpg',
-      bgColor: '#00da70',
-      parametro:"Arte"
-    },
-    {
-      name: 'Geografía',
-      description: 'Jujuy',
-      image: '../assets/img/vi.jpg',
-      bgColor: '#00dac6',
-      parametro:"Geografía"
-    },
-    {
-      name: 'Anime',
-      description: 'Jujuy',
-      image: '../assets/img/vi.jpg',
-      bgColor: '#0081da',
-      parametro:"Anime"
-    },
-    {
-      name: 'Ciencia',
-      description: 'Jujuy',
-      image: '../assets/img/vi.jpg',
-      bgColor: '#ac64e1',
-      parametro:"Ciencia"
-    },
-    {
-      name: 'Libros',
-      description: 'Jujuy',
-      image: '../assets/img/vi.jpg',
-      bgColor: '#b200da',
-      parametro:"Libros"
-    },
-    {
-      name: 'Videojuegos',
-      description: 'Jujuy',
-      image: '../assets/img/vi.jpg',
-      bgColor: '#f000d3',
-      parametro:"Videojuegos"
-    },
-    {
-      name: 'Música',
-      description: 'Jujuy',
-      image: '../assets/img/vi.jpg',
-      bgColor: '#f0007f',
-      parametro:"Música"
-    }
-  ];
-  
-  
   slidesPerView = 1;
   spaceBetween = 25;
-  
+
   paginationConfig = {
     clickable: true,
     dynamicBullets: true,
   };
+
   breakpoints = {
     0: { slidesPerView: 1 },
     520: { slidesPerView: 2 },
@@ -124,30 +37,43 @@ export class CategoriesComponent implements AfterViewInit {
   };
 
   // Evento para cambiar el fondo según el slide activo
-
   onSlideChange(event: Event) {
-    const swiperEl = event.target as any; // El evento proviene de `swiper-container`
-    const activeIndex = swiperEl.swiper.activeIndex; // Obtiene el índice activo
-    const activeSlide = swiperEl.querySelectorAll('swiper-slide')[activeIndex]; // Selecciona el slide activo
-    const newBgColor = activeSlide.getAttribute('data-bg'); // Obtiene el color de fondo
-    document.body.style.backgroundColor = newBgColor; // Cambia el fondo
-  }
-
-  /*onSlideChange(event: any) {
-    console.log("AAAAAAA")
-    const swiper = event[0].swiper; // Obtén la instancia de Swiper
-    const activeSlide = swiper.slides[swiper.activeIndex];
+    const swiperEl = event.target as any;
+    const activeIndex = swiperEl.swiper.activeIndex;
+    const activeSlide = swiperEl.querySelectorAll('swiper-slide')[activeIndex];
     const newBgColor = activeSlide.getAttribute('data-bg');
     document.body.style.backgroundColor = newBgColor;
-  }*/
-  
-    ngAfterViewInit(): void {
-      this.swiper.nativeElement.initialize();
-    }
-  
-    navigateToSlide(categoria:any){
-      this.router.navigate(["/niveles", categoria]);
-    }
+  }
+
+  ngAfterViewInit(): void {
+    this.swiper.nativeElement.initialize();
+  }
+
+  ngOnInit(): void {
+    this.getCategories();
+  }
+
+  // Método para obtener las categorías desde el backend
+  getCategories(): void {
+    this.http.post('http://localhost:3000/getCategories', {})
+      .subscribe(
+        (response: any) => {
+          this.slides = response.map((category: any) => ({
+            name: category.name[0] || 'Sin nombre',
+            description: category.description[0] || '',
+            image: category.image[0] || '../assets/img/default.jpg',
+            bgColor: category.bgColor[0] || '#ffffff',
+            parametro: category.parametro[0] || category.name[0],
+          }));
+        },
+        (error) => {
+          console.error('Error al obtener categorías:', error);
+        }
+      );
+  }
 
 
+  navigateToSlide(categoria: any): void {
+    this.router.navigate(['/niveles', categoria]);
+  }
 }
