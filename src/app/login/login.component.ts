@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -38,10 +39,18 @@ export class LoginComponent {
       .subscribe({
         next: (response: any) => {
           if (response) {
-            alert('Login exitoso');
-            // Guardar el nombre del usuario en localStorage
-            localStorage.setItem('username', username);
-            this.router.navigate(['/home']);
+            // Mensaje de inicio de sesión exitoso
+            Swal.fire({
+              icon: 'success',
+              title: 'Inicio de sesión exitoso',
+              text: `¡Bienvenido, ${username}!`,
+              showConfirmButton: false,
+              timer: 1000,
+            }).then(() => {
+              // Guardar el nombre del usuario en localStorage
+              localStorage.setItem('username', username);
+              this.router.navigate(['/home']);
+            });
           } else {
             this.errorMessage = 'Credenciales incorrectas.';
           }
