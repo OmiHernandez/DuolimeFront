@@ -27,7 +27,8 @@ body{
   border-radius: 5px;
   background-color: #474493;
   text-align: center;
-  height: 45vh;
+  min-height: 60vh;
+  height: auto;
 }
 .slide-content img {
   width: 50%;

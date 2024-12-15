@@ -9,33 +9,33 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" href="register">Registrarse</a>
+          <a class="nav-link blanco" href="register">Registrarse</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="loggin">Iniciar sesión</a>
+          <a class="nav-link blanco" href="loggin">Iniciar sesión</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="puntaje">Puntajes</a>
+          <a class="nav-link blanco" href="puntaje">Puntajes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="ranking">Ranking</a>
+          <a class="nav-link blanco" href="ranking">Ranking</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Configuración</a>
+          <a class="nav-link blanco" href="#">Configuración</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Logros</a>
+          <a class="nav-link blanco" href="#">Logros</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">-</a>
+          <a class="nav-link blanco" href="#">-</a>
         </li>
       </ul>
       <!-- Mostrar el nombre de usuario o "Bienvenido, Invitado" -->
-      <span class="navbar-text">
+      <span class="navbar-text blanco">
         Bienvenido, {{ username || 'Invitado' }}
       </span>
       <!-- Mostrar el botón de cerrar sesión solo si hay un usuario -->
-      <button *ngIf="username" (click)="logout()" class="btn btn-outline-danger ms-3">
+      <button *ngIf="username" (click)="logout()" class="btn btn-outline-danger ms-3 blanco">
         Cerrar sesión
       </button>
     </div>

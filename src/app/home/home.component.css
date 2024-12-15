@@ -1,0 +1,49 @@
+.button-container {
+  display: flex;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  gap: 10px;
+  margin-top: 10px;
+}
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.custom-button {
+  background-color: #4a3ebd;
+  color: white;
+  border: none;
+  width: 40%;
+  border-radius: 10px;
+  padding: 10px 20px; 
+  font-size: 16px; /* Tamaño del texto */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* Sombra similar */
+  cursor: pointer; /* Cambia el cursor al pasar */
+  transition: transform 0.2s, box-shadow 0.2s; /* Efecto al interactuar */
+}
+
+.custom-button:hover {
+  transform: translateY(-3px); /* Eleva el botón al pasar el cursor */
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.4); /* Aumenta la sombra */
+}
+
+.custom-button:active {
+  transform: translateY(1px); /* Simula un clic */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Reduce la sombra */
+}
+.bienvenida {
+    color: white;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    margin: 5vh 0;
+}
+.bienvenida p {
+    width: 50%;
+    margin: 0 auto;
+}
+@media (max-width: 768px) {
+    .bienvenida p {
+        width: 100%;
+    }
+}

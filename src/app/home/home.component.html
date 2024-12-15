@@ -1,5 +1,34 @@
 <div>
-    <!-- <div>Home</div> -->
-    <div></div>
+    <div *ngIf="username" class="bienvenida">
+        <h2>Bienvenido, {{ username }}</h2>
+        <p>Conoce tus puntajes en cada una de las categorias que existen, así como conocer tu posicionamiento entre los distintos usuarios dentro de Duolime</p>
+        <br>
+        <div class="button-container">
+            <button class="custom-button" href="puntaje">
+                <a href="puntaje">
+                    <h4>Ver puntajes</h4>
+                </a>
+            </button>
+            <button class="custom-button">
+                <a href="ranking">
+                    <h4>Ranking</h4>
+                </a>
+            </button>
+        </div>          
+    </div>
+    <div *ngIf="!username" class="bienvenida">
+        <h2>¡Guarda tu progreso!</h2>
+        <p>Inicia sesión para que puedas guardar cada uno de tus puntajes y participar para ser de los mejores dentro de Duolime</p>
+        <br>
+        <div class="button-container">
+            <button class="custom-button" href="puntaje">
+                <a href="loggin">
+                    <h4>Iniciar sesión</h4>
+                </a>
+            </button>
+        </div>          
+    </div>
+    <br>
     <app-categories></app-categories>
+    <br><br>
 </div>

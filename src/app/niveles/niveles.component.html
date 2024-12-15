@@ -18,13 +18,13 @@
             (click)="navigateToSlide(categoria,level.number)"
             [title]="level.unlocked ? 'Desbloqueado' : 'Bloqueado'"
           >
-            {{ level.number < 10 ? level.number : 'G' }}
+            {{ level.number }}
           </span>
         </div>
-        <a class="button new-game" href="#">Nuevo Juego</a>
-        <a class="button guardian-mode" href="#">
-          Modo Guardián
-          <i class="fas fa-lock"></i>
+        <a class="button new-game" href="#">Jugar siguiente nivel</a>
+        <a class="button guardian-mode" href="home">
+          <i class="fa-solid fa-arrow-left"></i>
+          volver al menú
         </a>
         <div class="footer"></div>
       </div>

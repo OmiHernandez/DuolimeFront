@@ -1,6 +1,6 @@
 .background {
   display: flex;
-  height: 100vh;
+  /* height: 100vh; */
   background: linear-gradient(135deg, #401479, #ee56c8);
 }
 
