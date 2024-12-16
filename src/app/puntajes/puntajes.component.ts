@@ -13,24 +13,32 @@ import Swal from 'sweetalert2';
 })
 export class PuntajeComponent implements OnInit {
   categorias: string[] = [];
-  puntajes: { [categoria: string]: number[] } = {};
+  puntajes: { [categoria: string]: { id: string; score: number }[] } = {};
   isLoggedIn: boolean = false;
+  username: string = '';  // Guarda el username
+  userId: string = '';    // Guarda el id del usuario
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     this.checkLoginStatus();
     if (this.isLoggedIn) {
-      this.getCategories();
+      this.username = localStorage.getItem('username') || '';
+      this.userId = localStorage.getItem('userId') || '';  // Obtén el id del usuario
+      console.log('UserId:', this.userId); // Verificación
+      this.getCategories();  // Obtener categorías si el usuario está logueado
     } else {
       this.showLoginAlert();
     }
   }
 
+  // Verificar si el usuario está logueado
   checkLoginStatus(): void {
     this.isLoggedIn = localStorage.getItem('username') !== null;
+    console.log('Está logueado:', this.isLoggedIn);  // Verificación
   }
 
+  // Mostrar alerta si el usuario no está logueado
   showLoginAlert(): void {
     Swal.fire({
       icon: 'warning',
@@ -49,12 +57,14 @@ export class PuntajeComponent implements OnInit {
     });
   }
 
+  // Obtener categorías
   getCategories(): void {
     this.http.post('http://localhost:3000/getCategories', {})
       .subscribe(
         (response: any) => {
+          console.log('Categorías obtenidas:', response);  // Verificación
           this.categorias = response.map((category: any) => category.name[0] || 'Sin nombre');
-          this.initializePuntajes();
+          this.getPuntajes();  // Obtener puntajes después de obtener las categorías
         },
         (error) => {
           console.error('Error al obtener categorías:', error);
@@ -62,15 +72,34 @@ export class PuntajeComponent implements OnInit {
       );
   }
 
-  initializePuntajes(): void {
-    this.categorias.forEach(categoria => {
-      this.puntajes[categoria] = Array(10).fill(0);
+  getPuntajes(): void {
+    this.categorias.forEach((categoria) => {
+      console.log(`Enviando solicitud a: http://localhost:3000/getPuntaje?id=${this.userId}&category=${categoria}`);
+      this.http.post('http://localhost:3000/getPuntaje', { id: this.userId, category: categoria })
+        .subscribe(
+          (response: any) => {
+            // Suponemos que la respuesta tiene la estructura: { category: 'Anime', score: 510 }
+            const puntaje = response.score ? response.score : 0;
+
+            // Si no existe la categoría en puntajes, inicialízala
+            if (!this.puntajes[categoria]) {
+              this.puntajes[categoria] = [];
+            }
+
+            // Guarda el puntaje para el usuario en esta categoría
+            this.puntajes[categoria].push({ id: this.userId, score: puntaje });
+          },
+          (error) => {
+            console.error(`Error al obtener puntaje para la categoría ${categoria}:`, error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error al obtener puntajes',
+              text: `No se pudo obtener el puntaje para la categoría "${categoria}".`,
+            });
+          }
+        );
     });
   }
 
-  actualizarPuntaje(categoria: string, nivel: number, aciertos: number): void {
-    if (nivel >= 1 && nivel <= 10) {
-      this.puntajes[categoria][nivel - 1] = aciertos;
-    }
-  }
+
 }
