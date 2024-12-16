@@ -1,9 +1,15 @@
 .background {
-  display: flex;
-  /* height: 100vh; */
   background: linear-gradient(135deg, #401479, #ee56c8);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
 }
 
+.container {
+  width: 80%;
+}
 .custom-h1 {
   color: #fff;
   font-family: 'Arial', sans-serif;

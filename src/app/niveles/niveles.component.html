@@ -1,11 +1,14 @@
 <html>
 
 <head>
-  <title>Libros</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+  <title>{{ categoria }}</title>
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    rel="stylesheet"
+  />
 </head>
 
-<body [ngStyle]="{ 'background': backgroundStyle }">
+<body [ngStyle]="{ background: backgroundStyle }">
   <div class="container">
     <div class="header">{{ categoria | uppercase }}</div>
     <div class="level">
@@ -18,15 +21,11 @@
         {{ level.number }}
       </span>
     </div>
-    <button class="button new-game" (click)="playNextUnlocked()">
-      Jugar siguiente nivel
-    </button>
     <a class="button guardian-mode" href="home">
       <i class="fa-solid fa-arrow-left"></i>
-      volver al menú
+      Volver al menú
     </a>
   </div>
-  
 </body>
 
 </html>

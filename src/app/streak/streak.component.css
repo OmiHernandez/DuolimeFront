@@ -1,14 +1,75 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .racha-container {
-    text-align: center;
-    margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #b245d3, #762fa0, #550b6b);
+  color: #fff;
+  text-align: center;
+}
+
+.racha-container .bg-white {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 600px;
+  padding: 40px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #e2e0d8, #e4e2d9);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.streak-image {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+}
+
+.racha-container h3 {
+  color: #d90000;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.racha-container p.fs-2 {
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+  font-size: 1.8rem;
+  color: #e74c3c;
+}
+
+.racha-container p.fs-4 {
+  font-size: 1.5rem;
+  color: #999;
+}
+
+/* Responsividad para dispositivos pequeños */
+@media (max-width: 767px) {
+  .racha-container .bg-white {
+    width: 90%; /* Ajusta el tamaño en pantallas pequeñas */
+    padding: 20px;
   }
-  
+
+  .streak-image {
+    width: 120px;
+    height: 120px; /* Reducción de la imagen en pantallas pequeñas */
+  }
+
   .racha-container h3 {
-    color: #f39c12;
+    font-size: 2rem; /* Reducción de tamaño de fuente en pantallas pequeñas */
   }
-  
-  .racha-container p {
-    font-size: 1.5em;
-    color: #e74c3c;
+
+  .racha-container p.fs-2 {
+    font-size: 1.5rem; /* Reducción del tamaño del texto */
   }
-  
+}

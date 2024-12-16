@@ -1,8 +1,14 @@
-<div class="racha-container">
-    <h3>Tu Racha Actual</h3>
-    <p *ngIf="racha !== null; else loading">🔥 {{ racha }} días 🔥</p>
-    <ng-template #loading>
-      <p>Cargando...</p>
-    </ng-template>
+<div class="racha-container d-flex flex-column align-items-center justify-content-center vh-100 bg-light">
+  <div class="d-flex align-items-center flex-column flex-md-row p-4 rounded shadow-sm bg-white">
+    <img src="assets/img/streak.jpg" alt="Racha" class="streak-image me-md-4 mb-4 mb-md-0" />
+    <div class="text-center text-md-start">
+      <h3 class="display-4 mb-4">Tu Racha Actual</h3>
+      <p *ngIf="racha !== null; else loading" class="fs-2 text-danger">
+        🔥 <strong>{{ racha }}</strong> días 🔥
+      </p>
+      <ng-template #loading>
+        <p class="fs-4 text-secondary">Cargando...</p>
+      </ng-template>
+    </div>
   </div>
-  
+</div>

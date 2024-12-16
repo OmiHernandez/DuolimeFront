@@ -69,7 +69,7 @@ body {
     background-color: #337ab7;
 }
 .button.guardian-mode {
-    background-color: #6c757d;
+    background-color: #0655a0;
     position: relative;
 }
 .button.guardian-mode i {
@@ -96,9 +96,8 @@ body {
     background-color: gray; /* Bloqueado */
     cursor: not-allowed;
   }
-  
+
   .level span.unlocked {
     cursor: pointer;
     background-color: #4caf50; /* Desbloqueado */
   }
-  

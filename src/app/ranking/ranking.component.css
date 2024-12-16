@@ -1,122 +1,114 @@
-.custom-h1 {
-  color: #ffffff;
+/* Fondo del contenedor principal */
+.background {
+  background: linear-gradient(135deg, #401479, #6a1b9a); /* Tonos morados de fondo */
+  padding: 30px;
+  height: 100vh;
   font-family: 'Arial', sans-serif;
-  font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  justify-content: center;
+  align-items: center;
+  color: #fff;
 }
 
-.card-body {
-  background-color: #936eb1;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-}
-
+/* Estilo de la tarjeta contenedora */
 .card {
   border: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  background: #5e3a8c; /* Un morado más oscuro */
 }
 
 .card-header {
-  background: #a084ca;
-  color: #ffffff;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  font-family: 'Roboto', sans-serif;
+  background: #7c4d9e; /* Un morado suave */
+  color: #fff;
+  padding: 20px 0;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-.background {
-  background: linear-gradient(135deg, #401479, #ee56c8);
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
+/* Estilo de la tabla */
 .table {
   font-size: 1rem;
   margin-top: 20px;
-  background-color: #ffffff;
+  background-color: #f7f7f7; /* Fondo gris claro */
   border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
 }
 
-.table th, .table td {
-  padding: 12px 15px;
-  vertical-align: middle;
+/* Cabecera de la tabla */
+.table th {
+  background-color: #925fb4; /* Morado suave */
+  color: #ffffff;
+  text-align: center;
+  padding: 16px 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
 }
 
+.table th:hover {
+  background-color: #7c4d9e; /* Cambio al pasar el cursor */
+}
+
+/* Filas de la tabla */
+.table td {
+  padding: 15px;
+  text-align: center;
+  background-color: #ffffff; /* Blanco */
+  border-bottom: 2px solid #eaeaea; /* Línea suave entre filas */
+  font-size: 1.1rem;
+  color: #6a1b9a;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Filas alternadas */
 .table-striped tbody tr:nth-child(odd) {
-  background-color: #f8f9fa;
+  background-color: #f3e8ff; /* Gris claro con toque morado */
 }
 
+.table-striped tbody tr:nth-child(even) {
+  background-color: #ffffff; /* Blanco puro */
+}
+
+/* Efecto hover en filas */
 .table-hover tbody tr:hover {
-  background-color: #f1c4f3;
+  background-color: #e0b3ff;
   cursor: pointer;
+  transform: scale(1.02); /* Animación al pasar el mouse */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.table-bordered {
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
-}
-
-.table-bordered th, .table-bordered td {
-  border: 1px solid #dee2e6;
-}
-
-.table-responsive {
-  margin-top: 20px;
-  overflow-x: auto;
-}
-
-.text-center {
+/* Mensaje cuando no hay datos */
+.table-empty-message td {
+  font-size: 1.2rem;
+  color: #9c4d97;
+  font-style: italic;
   text-align: center;
 }
 
-thead.thead-dark th {
-  background-color: #6a1b9a;
-  color: white;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-thead.thead-light th {
-  background-color: #f1c4f3;
-  color: #6a1b9a;
-}
-
-.table + .table {
-  margin-top: 30px;
-}
-
-.table td, .table th {
-  border-top: 1px solid #dee2e6;
-}
-
-h3 {
-  color: white;
-  font-weight: bold;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-.table th, .table td {
-  border-radius: 3px;
-}
-.background {
-  background: linear-gradient(135deg, #401479, #ee56c8);
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-  height: 100vh;
-  flex-direction: column;
-}
-
+/* Estilos responsivos */
 @media (max-width: 768px) {
   .table th, .table td {
-    font-size: 0.875rem;
+    font-size: 0.9rem;
+    padding: 10px 12px;
   }
 
-  .custom-h1 {
-    font-size: 1.5rem;
+  .card {
+    max-width: 95%;
+    margin: 0 10px;
   }
 
-  .table-responsive {
-    margin-top: 15px;
+  .card-header {
+    font-size: 1.2rem;
   }
 }
+
