@@ -1,32 +1,32 @@
 <html>
-  <head>
-    <title>Libros</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-      rel="stylesheet"
-    />
-  </head>
-  <body [ngStyle]="{ 'background': backgroundStyle }">
-    <div class="container">
-        <div class="header">
-          {{ categoria | uppercase }}
-        </div>
-        <div class="level">
-          <span
-            *ngFor="let level of levels; let i = index"
-            [class.unlocked]="level.unlocked"
-            (click)="navigateToSlide(categoria,level.number)"
-            [title]="level.unlocked ? 'Desbloqueado' : 'Bloqueado'"
-          >
-            {{ level.number }}
-          </span>
-        </div>
-        <a class="button new-game" href="#">Jugar siguiente nivel</a>
-        <a class="button guardian-mode" href="home">
-          <i class="fa-solid fa-arrow-left"></i>
-          volver al menú
-        </a>
-        <div class="footer"></div>
-      </div>
-  </body>
+
+<head>
+  <title>Libros</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+</head>
+
+<body [ngStyle]="{ 'background': backgroundStyle }">
+  <div class="container">
+    <div class="header">{{ categoria | uppercase }}</div>
+    <div class="level">
+      <span
+        *ngFor="let level of levels; let i = index"
+        [class.unlocked]="level.unlocked"
+        (click)="navigateToSlide(categoria, level.number)"
+        [title]="level.unlocked ? 'Desbloqueado' : 'Bloqueado'"
+      >
+        {{ level.number }}
+      </span>
+    </div>
+    <button class="button new-game" (click)="playNextUnlocked()">
+      Jugar siguiente nivel
+    </button>
+    <a class="button guardian-mode" href="home">
+      <i class="fa-solid fa-arrow-left"></i>
+      volver al menú
+    </a>
+  </div>
+  
+</body>
+
 </html>

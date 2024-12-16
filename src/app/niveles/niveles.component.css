@@ -83,3 +83,22 @@ body {
     background-color: #d18f2b;
     border-radius: 0 0 10px 10px;
 }
+
+.level span {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    margin: 5px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    background-color: gray; /* Bloqueado */
+    cursor: not-allowed;
+  }
+  
+  .level span.unlocked {
+    cursor: pointer;
+    background-color: #4caf50; /* Desbloqueado */
+  }
+  
