@@ -1,4 +1,3 @@
-
 <ng-template #finDelJuego>
   <div class="d-flex justify-content-center align-items-center min-vh-100">
     <div class="text-center p-5 border rounded shadow-lg bg-light">
@@ -9,19 +8,16 @@
   </div>
 </ng-template>
 
-  <ng-template #loading>
-    <p>Cargando preguntas...</p>
-  </ng-template>
+<ng-template #loading>
+  <p>Cargando preguntas...</p>
+</ng-template>
 
 
 <section *ngIf="!juegoTerminado; else finDelJuego">
   <div *ngIf="preguntas.length > 0; else loading">
     <div class="container">
       <div class="progress-bar">
-        <div
-          class="progress"
-          [ngStyle]="{ width: progreso + '%' }"
-        ></div>
+        <div class="progress" [ngStyle]="{ width: progreso + '%' }"></div>
       </div>
 
       <div class="header">
@@ -41,16 +37,25 @@
         </div>
       </div>
 
-      <div
-        class="feedback"
-        *ngIf="mostrarFeedback"
-        [ngClass]="{ correcto: esRespuestaCorrecta, incorrecto: !esRespuestaCorrecta }"
-      >
+      <!-- <div class="feedback" *ngIf="mostrarFeedback"
+        [ngClass]="{ correcto: esRespuestaCorrecta, incorrecto: !esRespuestaCorrecta }">
         <p>{{ esRespuestaCorrecta ? '¡Correcto!' : 'Incorrecto' }}</p>
-      </div>
+      </div> -->
     </div>
   </div>
 </section>
+
+<ng-template #finDelJuego>
+  <div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="text-center p-5 border rounded shadow-lg bg-light">
+      <h2 class="text-primary">¡Juego terminado!</h2>
+      <p>Respuestas correctas: {{ respuestasCorrectas }} de {{ preguntas.length }}</p>
+      <p class="text-success">Puntaje registrado con éxito.</p>
+      <button (click)="router.navigate(['/home'])" class="btn btn-primary mt-3">Volver al inicio</button>
+    </div>
+  </div>
+</ng-template>
+
 
 <!-- <div class="juego-container" *ngIf="!juegoTerminado && preguntas.length > 0; else finDelJuego">
   <h2>Pregunta {{ currentIndex + 1 }} de {{ preguntas.length }}</h2>
