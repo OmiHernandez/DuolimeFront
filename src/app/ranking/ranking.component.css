@@ -2,8 +2,27 @@
   color: #ffffff;
   font-family: 'Arial', sans-serif;
   font-weight: bold;
-  margin-bottom: 30px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.card-body {
+  background-color: #936eb1;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background: #a084ca;
+  color: #ffffff;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .background {
@@ -79,6 +98,13 @@ h3 {
 
 .table th, .table td {
   border-radius: 3px;
+}
+.background {
+  background: linear-gradient(135deg, #401479, #ee56c8);
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  height: 100vh;
+  flex-direction: column;
 }
 
 @media (max-width: 768px) {
