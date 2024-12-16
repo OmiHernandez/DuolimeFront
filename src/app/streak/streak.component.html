@@ -1,0 +1,8 @@
+<div class="racha-container">
+    <h3>Tu Racha Actual</h3>
+    <p *ngIf="racha !== null; else loading">🔥 {{ racha }} días 🔥</p>
+    <ng-template #loading>
+      <p>Cargando...</p>
+    </ng-template>
+  </div>
+  

@@ -1,7 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
@@ -10,7 +16,7 @@ import Swal from 'sweetalert2';
   standalone: true,
   imports: [FormsModule, CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -19,7 +25,7 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router,
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -32,14 +38,15 @@ export class LoginComponent {
       this.errorMessage = 'Todos los campos son obligatorios.';
       return;
     }
-  
+
     const { username, password } = this.loginForm.value;
-  
-    this.http.post('http://localhost:3000/getProfile', { username, password })
+
+    this.http
+      .post('http://localhost:3000/getProfile', { username, password })
       .subscribe({
         next: (response: any) => {
           if (response) {
-            // Mensaje de inicio de sesión exitoso
+            const { id } = response.$; // Asegúrate de que el backend devuelva el id
             Swal.fire({
               icon: 'success',
               title: 'Inicio de sesión exitoso',
@@ -47,7 +54,8 @@ export class LoginComponent {
               showConfirmButton: false,
               timer: 1000,
             }).then(() => {
-              // Guardar el nombre del usuario en localStorage
+              // Guardar el id y el nombre del usuario en localStorage
+              localStorage.setItem('userId', id);
               localStorage.setItem('username', username);
               this.router.navigate(['/home']);
             });
@@ -57,8 +65,7 @@ export class LoginComponent {
         },
         error: () => {
           this.errorMessage = 'Error en el servidor. Inténtelo más tarde.';
-        }
+        },
       });
   }
-  
 }

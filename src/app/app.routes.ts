@@ -6,9 +6,11 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { PuntajeComponent } from './puntajes/puntajes.component';
 import { RankingComponent } from './ranking/ranking.component';
+import { StreakComponent } from './streak/streak.component';
 
 export const routes: Routes = [
     { path: 'home', component: HomeComponent },
+    { path: 'racha', component: StreakComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'loggin', component: LoginComponent },
     { path: 'puntaje', component: PuntajeComponent },
