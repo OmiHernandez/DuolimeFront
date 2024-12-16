@@ -56,6 +56,12 @@
   </div>
 </ng-template>
 
+<div *ngIf="mostrarFeedback" class="feedback" 
+     [ngClass]="{ 'correcto': esRespuestaCorrecta, 'incorrecto': !esRespuestaCorrecta }">
+  <p>{{ esRespuestaCorrecta ? '¡Correcto!' : 'Incorrecto' }}</p>
+</div>
+
+
 
 <!-- <div class="juego-container" *ngIf="!juegoTerminado && preguntas.length > 0; else finDelJuego">
   <h2>Pregunta {{ currentIndex + 1 }} de {{ preguntas.length }}</h2>

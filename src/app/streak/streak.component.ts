@@ -26,7 +26,7 @@ export class StreakComponent {
   }
 
   updateRacha(userId: string): void {
-    this.http.post('http://localhost:3000/updateRacha', { id: userId })
+    this.http.post('https://liked-walleye-trusting.ngrok-free.app/updateRacha', { id: userId })
       .subscribe({
         next: (response: any) => {
           this.racha = parseInt(response, 10);

@@ -54,7 +54,7 @@ export class PuntajeComponent implements OnInit {
   }
 
   getCategories(): void {
-    this.http.post('http://localhost:3000/getCategories', {})
+    this.http.post('https://liked-walleye-trusting.ngrok-free.app/getCategories', {})
       .subscribe(
         (response: any) => {
           this.categorias = response.map((category: any) => category.name[0] || 'Sin nombre');
@@ -68,7 +68,7 @@ export class PuntajeComponent implements OnInit {
 
   getPuntajes(): void {
     this.categorias.forEach((categoria) => {
-      this.http.post('http://localhost:3000/getPuntaje', { id: this.userId, category: categoria })
+      this.http.post('https://liked-walleye-trusting.ngrok-free.app/getPuntaje', { id: this.userId, category: categoria })
         .subscribe(
           (response: any) => {
             const puntaje = response ? response : 0;

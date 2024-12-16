@@ -61,7 +61,7 @@ export class NivelesComponent {
    */
   getUserProgress(userId: string, category: string): void {
     this.http
-      .post('http://localhost:3000/getProgress', { id: userId, category })
+      .post('https://liked-walleye-trusting.ngrok-free.app/getProgress', { id: userId, category })
       .subscribe({
         next: (response: any) => {
           const level = parseInt(response, 10);
@@ -94,7 +94,7 @@ export class NivelesComponent {
     const nextLevel = level + 1;
 
     this.http
-      .post('http://localhost:3000/registerProgress', {
+      .post('https://liked-walleye-trusting.ngrok-free.app/registerProgress', {
         id: this.userId,
         category: this.categoria,
         newlevel: nextLevel,

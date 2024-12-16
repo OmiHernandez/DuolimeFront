@@ -51,7 +51,7 @@ export class RankingComponent implements OnInit {
   }
 
   getRankingGlobal(): void {
-    this.http.post('http://localhost:3000/getRanking', {})
+    this.http.post('https://liked-walleye-trusting.ngrok-free.app/getRanking', {})
       .subscribe({
         next: (response: any) => {
           console.log('Respuesta del servidor:', response);

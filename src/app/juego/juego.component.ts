@@ -8,9 +8,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './juego.component.html',
-  styleUrl: './juego.component.css'
+  styleUrl: './juego.component.css',
 })
-export class JuegoComponent implements OnInit{
+export class JuegoComponent implements OnInit {
   categoria: string | null = null;
   level: string | null = null;
   preguntas: any[] = [];
@@ -21,6 +21,8 @@ export class JuegoComponent implements OnInit{
   tiempoRestante = 20;
   progreso = 0;
   intervalo: any;
+  mostrarFeedback: boolean = false;
+  esRespuestaCorrecta: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,17 +38,19 @@ export class JuegoComponent implements OnInit{
 
   fetchPreguntas() {
     const body = { tema: this.categoria };
-    this.http.post<any>('http://localhost:3000/obtenerPregunta', body).subscribe({
-      next: (response) => {
-        this.preguntas = response.preguntas;
-        if (this.preguntas && this.preguntas.length > 0) {
-          this.iniciarTemporizador();
-        }
-      },
-      error: (err) => {
-        console.error('Error al obtener las preguntas', err);
-      }
-    });
+    this.http
+      .post<any>('https://liked-walleye-trusting.ngrok-free.app/obtenerPregunta', body)
+      .subscribe({
+        next: (response) => {
+          this.preguntas = response.preguntas;
+          if (this.preguntas && this.preguntas.length > 0) {
+            this.iniciarTemporizador();
+          }
+        },
+        error: (err) => {
+          console.error('Error al obtener las preguntas', err);
+        },
+      });
   }
 
   iniciarTemporizador() {
@@ -60,19 +64,28 @@ export class JuegoComponent implements OnInit{
   }
 
   responder(opcion: 'F' | 'V') {
-    const respuestaCorrecta = this.preguntas[this.indicePregunta].respuesta === opcion;
+    const respuestaCorrecta =
+      this.preguntas[this.indicePregunta].respuesta === opcion;
     this.registrarRespuesta(respuestaCorrecta);
   }
 
   registrarRespuesta(esCorrecta: boolean) {
+    this.esRespuestaCorrecta = esCorrecta;
+    this.mostrarFeedback = true;
+  
     if (esCorrecta) {
       this.respuestasCorrectas++;
     }
-
+  
     clearInterval(this.intervalo);
-    this.pasoSiguiente();
+  
+    // Ocultar feedback después de 1.5 segundos y pasar a la siguiente pregunta
+    setTimeout(() => {
+      this.mostrarFeedback = false;
+      this.pasoSiguiente();
+    }, 1500);
   }
-
+  
   pasoSiguiente() {
     this.indicePregunta++;
     this.progreso = (this.indicePregunta / this.preguntas.length) * 100;
@@ -96,25 +109,24 @@ export class JuegoComponent implements OnInit{
     const body = {
       id: userId,
       category: this.categoria,
-      newscore: this.respuestasCorrectas.toString()
+      newscore: this.respuestasCorrectas.toString(),
     };
 
-    this.http.post('http://localhost:3000/registerPuntaje', body).subscribe({
+    this.http.post('https://liked-walleye-trusting.ngrok-free.app/registerPuntaje', body).subscribe({
       next: () => {
         console.log('Puntaje registrado con éxito.');
       },
       error: (err) => {
         console.error('Error al registrar el puntaje', err);
-      }
+      },
     });
   }
-
 }
 // Quiz terminado
-      //alert(`¡Quiz finalizado! Respuestas correctas: ${this.respuestasCorrectas}`);
+//alert(`¡Quiz finalizado! Respuestas correctas: ${this.respuestasCorrectas}`);
 
-  // Maneja la selección de la respuesta
-  /*seleccionarRespuesta(respuesta: string) {
+// Maneja la selección de la respuesta
+/*seleccionarRespuesta(respuesta: string) {
     this.respuestaSeleccionada = respuesta;
 
     // Verifica si la respuesta seleccionada es correcta
@@ -131,4 +143,3 @@ export class JuegoComponent implements OnInit{
       this.juegoTerminado = true;
     }
   }*/
-

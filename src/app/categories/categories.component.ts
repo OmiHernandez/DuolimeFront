@@ -55,7 +55,7 @@ export class CategoriesComponent implements AfterViewInit, OnInit {
 
   // Método para obtener las categorías desde el backend
   getCategories(): void {
-    this.http.post('http://localhost:3000/getCategories', {})
+    this.http.post('https://liked-walleye-trusting.ngrok-free.app/getCategories', {})
       .subscribe(
         (response: any) => {
           this.slides = response.map((category: any) => ({

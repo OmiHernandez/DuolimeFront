@@ -42,7 +42,7 @@ export class LoginComponent {
     const { username, password } = this.loginForm.value;
 
     this.http
-      .post('http://localhost:3000/getProfile', { username, password })
+      .post('https://liked-walleye-trusting.ngrok-free.app/getProfile', { username, password })
       .subscribe({
         next: (response: any) => {
           if (response) {
