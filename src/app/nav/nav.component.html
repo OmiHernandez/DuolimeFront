@@ -35,8 +35,9 @@
       </ul>
       <!-- Mostrar el nombre de usuario o "Bienvenido, Invitado" -->
       <span class="navbar-text blanco">
-        Bienvenido, {{ username || 'Invitado' }}
+        Bienvenido, {{ username || 'Invitado' }}, Ranking: Usuario {{userId}}
       </span>
+    
       <!-- Mostrar el botón de cerrar sesión solo si hay un usuario -->
       <button *ngIf="username" (click)="logout()" class="btn btn-outline-danger ms-3 blanco">
         Cerrar sesión

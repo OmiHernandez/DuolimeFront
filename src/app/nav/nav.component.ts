@@ -15,12 +15,18 @@ export class NavComponent {
   // Obtener el username desde localStorage
   get username(): string | null {
     return localStorage.getItem('username');
+   
+  }
+
+  get userId(): string | null {
+    return localStorage.getItem('userId');
   }
 
   // Función para cerrar sesión
   logout(): void {
     // Eliminar el username del localStorage
     localStorage.removeItem('username');
+    localStorage.removeItem('userId');
     // Redirigir al usuario a la página de inicio de sesión
     this.router.navigate(['/loggin']);
   }

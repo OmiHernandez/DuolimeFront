@@ -1,8 +1,7 @@
-<div class="background" *ngIf="isLoggedIn"> <!-- Solo se muestra si está logueado -->
+<div class="background" *ngIf="isLoggedIn">
   <div class="container my-4">
     <h1 class="text-center custom-h1">Puntajes por Categoría</h1>
     <div class="accordion" id="categoriasAccordion">
-      <!-- Recorremos las categorías del usuario -->
       <div *ngFor="let categoria of categorias; let i = index" class="accordion-item">
         <h2 class="accordion-header" id="heading{{ i }}">
           <button
@@ -13,7 +12,7 @@
             [attr.data-bs-target]="'#collapse' + i"
             [attr.aria-expanded]="i === 0 ? 'true' : 'false'"
             [attr.aria-controls]="'collapse' + i">
-            {{ categoria }} <!-- Muestra el nombre de la categoría -->
+            {{ categoria }}
           </button>
         </h2>
         <div
@@ -31,10 +30,9 @@
                 </tr>
               </thead>
               <tbody>
-                <!-- Mostramos el puntaje por cada usuario y categoría -->
-                <tr *ngFor="let puntaje of puntajes[categoria]" class="table-light">
-                  <td class="text-center">{{ puntaje.id }}</td> <!-- Muestra el ID del usuario -->
-                  <td class="text-center">{{ puntaje.score }}</td> <!-- Muestra el puntaje correspondiente -->
+                <tr *ngIf="puntajes[categoria] !== undefined" class="table-light">
+                  <td class="text-center">{{ username }}</td>
+                  <td class="text-center">{{ puntajes[categoria] }}</td>
                 </tr>
               </tbody>
             </table>
