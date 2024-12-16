@@ -13,17 +13,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class JuegoComponent implements OnInit{
   categoria: string | null = null;
   level: string | null = null;
-  preguntas: any[] = []; // Lista de preguntas
-  currentIndex: number = 0; // Índice de la pregunta actual
-  respuestaSeleccionada: string | null = null; // Respuesta seleccionada (V o F)
-  respuestasCorrectas: number = 0; // Contador de respuestas correctas
-  juegoTerminado: boolean = false; // Bandera para el estado del juego
+  preguntas: any[] = [];
+  currentIndex: number = 0;
+  respuestasCorrectas: number = 0;
+  juegoTerminado: boolean = false;
   indicePregunta = 0;
   tiempoRestante = 20;
   progreso = 0;
   intervalo: any;
-  mostrarFeedback = false;
-  esRespuestaCorrecta = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -34,19 +31,14 @@ export class JuegoComponent implements OnInit{
   ngOnInit() {
     this.categoria = this.route.snapshot.paramMap.get('categoria');
     this.level = this.route.snapshot.paramMap.get('level');
-
-    // Obtener preguntas del backend
     this.fetchPreguntas();
   }
 
   fetchPreguntas() {
-    const body = { tema: this.categoria }; // Modifica según los parámetros necesarios para tu backend
+    const body = { tema: this.categoria };
     this.http.post<any>('http://localhost:3000/obtenerPregunta', body).subscribe({
       next: (response) => {
         this.preguntas = response.preguntas;
-        console.log(this.preguntas, "preguntitas del juego")
-
-        // Iniciar el temporizador después de cargar las preguntas
         if (this.preguntas && this.preguntas.length > 0) {
           this.iniciarTemporizador();
         }
@@ -62,7 +54,7 @@ export class JuegoComponent implements OnInit{
       if (this.tiempoRestante > 0) {
         this.tiempoRestante--;
       } else {
-        this.registrarRespuesta(false); // Marca como incorrecta por tiempo
+        this.registrarRespuesta(false);
       }
     }, 1000);
   }
@@ -73,19 +65,12 @@ export class JuegoComponent implements OnInit{
   }
 
   registrarRespuesta(esCorrecta: boolean) {
-    this.mostrarFeedback = true;
-    this.esRespuestaCorrecta = esCorrecta;
-
     if (esCorrecta) {
       this.respuestasCorrectas++;
     }
 
     clearInterval(this.intervalo);
-
-    setTimeout(() => {
-      this.mostrarFeedback = false;
-      this.pasoSiguiente();
-    }, 1000); // Muestra el feedback por 1 segundo
+    this.pasoSiguiente();
   }
 
   pasoSiguiente() {
@@ -96,12 +81,37 @@ export class JuegoComponent implements OnInit{
       this.tiempoRestante = 20;
       this.iniciarTemporizador();
     } else {
-      // Quiz terminado
-      //alert(`¡Quiz finalizado! Respuestas correctas: ${this.respuestasCorrectas}`);
       this.juegoTerminado = true;
+      this.enviarPuntaje();
     }
   }
 
+  enviarPuntaje() {
+    const userId = localStorage.getItem('userId'); // ID del usuario en localStorage
+    if (!userId || !this.categoria) {
+      console.error('ID de usuario o categoría no encontrados.');
+      return;
+    }
+
+    const body = {
+      id: userId,
+      category: this.categoria,
+      newscore: this.respuestasCorrectas.toString()
+    };
+
+    this.http.post('http://localhost:3000/registerPuntaje', body).subscribe({
+      next: () => {
+        console.log('Puntaje registrado con éxito.');
+      },
+      error: (err) => {
+        console.error('Error al registrar el puntaje', err);
+      }
+    });
+  }
+
+}
+// Quiz terminado
+      //alert(`¡Quiz finalizado! Respuestas correctas: ${this.respuestasCorrectas}`);
 
   // Maneja la selección de la respuesta
   /*seleccionarRespuesta(respuesta: string) {
@@ -121,4 +131,4 @@ export class JuegoComponent implements OnInit{
       this.juegoTerminado = true;
     }
   }*/
-}
+
