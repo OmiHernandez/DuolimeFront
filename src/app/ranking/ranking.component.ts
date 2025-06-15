@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-ranking',
@@ -13,6 +14,7 @@ import { CommonModule } from '@angular/common';
 })
 export class RankingComponent implements OnInit {
   rankingGlobal: { nombre: string, aciertosTotales: number }[] = [];
+  rankingTopPlayers: { nombre: string, aciertosTotales: number }[] = [];
   isLoggedIn: boolean = false;
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -22,12 +24,13 @@ export class RankingComponent implements OnInit {
   }
 
   checkLoginStatus(): void {
-    const token = localStorage.getItem('username');
-    console.log('Token:', token);
-    if (token) {
+    const usernameToken = localStorage.getItem('username');
+    console.log('Username Token:', usernameToken);
+    if (usernameToken) {
       this.isLoggedIn = true;
       this.getRankingGlobal();
     } else {
+      this.isLoggedIn = false;
       this.showLoginAlert();
     }
   }
@@ -50,30 +53,45 @@ export class RankingComponent implements OnInit {
     });
   }
 
-  getRankingGlobal(): void {
-    this.http.post('https://next-eel-firmly.ngrok-free.app/getRanking', {})
-      .subscribe({
-        next: (response: any) => {
-          console.log('Respuesta del servidor:', response);
+  async getRankingGlobal(): Promise<void> {
+    try {
+      const response: any = await lastValueFrom(
+        this.http.post('https://roughly-expert-rabbit.ngrok-free.app/getRanking', {})
+      );
 
-          // Asegurarnos de que response sea un array
-          const users = Array.isArray(response) ? response : [response];
+      console.log('Respuesta del servidor para el ranking:', response);
 
-          this.rankingGlobal = users.map(user => ({
-            nombre: `Usuario ${user.$.id}`,
-            aciertosTotales: parseInt(user.maxscore[0])
-          }));
+      if (Array.isArray(response)) {
+        this.rankingGlobal = response.map(userEntry => ({
+          nombre: userEntry.username,
+          aciertosTotales: parseInt(userEntry.total_score_global) || 0
+        }));
+        this.rankingGlobal.sort((a, b) => b.aciertosTotales - a.aciertosTotales);
+        this.rankingTopPlayers = this.rankingGlobal.slice(0, 3);
 
-          // Ordenar por aciertos totales
-          this.rankingGlobal.sort((a, b) => b.aciertosTotales - a.aciertosTotales);
+      } else {
+        console.warn('La respuesta del ranking no es un array:', response);
+        this.rankingGlobal = [];
+        this.rankingTopPlayers = [];
+        Swal.fire({
+          icon: 'info',
+          title: 'Sin datos de ranking',
+          text: 'No se encontraron datos de ranking o el formato es inesperado.',
+        });
+      }
 
-          console.log('Ranking procesado:', this.rankingGlobal);
-        },
-        error: (error) => {
-          console.error('Error al obtener el ranking global:', error);
-          this.rankingGlobal = [];
-        }
+      console.log('Ranking Global procesado:', this.rankingGlobal);
+      console.log('Ranking Top Jugadores procesado:', this.rankingTopPlayers);
+
+    } catch (error) {
+      console.error('Error al obtener el ranking global:', error);
+      this.rankingGlobal = [];
+      this.rankingTopPlayers = [];
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al cargar el ranking',
+        text: 'Hubo un problema al obtener el ranking global. Por favor, inténtalo de nuevo más tarde.',
       });
+    }
   }
-
 }

@@ -1,29 +1,67 @@
 <div *ngIf="isLoggedIn" class="background p-4">
-  <div class="card shadow-sm mx-auto" style="max-width: 800px;">
+  <div class="card shadow-sm mx-auto">
     <div class="card-header text-center text-white py-3">
-      <h5 class="custom-h1 mb-0">Ranking Global de Usuarios</h5>
+      <h5 class="custom-h1 mb-0">Rankings de Usuarios</h5>
     </div>
     <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-striped table-hover table-sm align-middle">
-          <thead class="bg-secondary text-white">
-            <tr>
-              <th class="text-center">Posición</th>
-              <th class="text-center">Usuario</th>
-              <th class="text-center">Aciertos Totales</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let usuario of rankingGlobal; let i = index">
-              <td class="text-center">{{i + 1}}</td>
-              <td class="text-center">{{usuario.nombre}}</td>
-              <td class="text-center">{{usuario.aciertosTotales}}</td>
-            </tr>
-            <tr *ngIf="rankingGlobal.length === 0">
-              <td colspan="3" class="text-center">No hay datos disponibles</td>
-            </tr>
-          </tbody>
-        </table>
+      <h5 class="text-center text-secondary mb-4">Los Mejores Jugadores</h5>
+      <div class="top-players-container d-flex justify-content-center flex-wrap gap-4 mb-5">
+        <ng-container *ngIf="rankingTopPlayers.length > 0; else noTopPlayers">
+          <div *ngFor="let usuario of rankingTopPlayers; let i = index" class="top-player-circle d-flex flex-column justify-content-center align-items-center text-center p-2" [ngClass]="{'rank-1': i === 0, 'rank-2': i === 1, 'rank-3': i === 2}">
+            <div class="position-badge mb-2">{{i + 1}}</div>
+            <div class="username-text mb-1">{{usuario.nombre}}</div>
+            <div class="score-text">{{usuario.aciertosTotales}}</div>
+          </div>
+        </ng-container>
+        <ng-template #noTopPlayers>
+          <p class="text-center text-muted my-4">No hay jugadores top disponibles para mostrar.</p>
+        </ng-template>
+      </div>
+      <div class="accordion" id="globalRankingAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingGlobal">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseGlobalRanking"
+              aria-expanded="false"
+              aria-controls="collapseGlobalRanking"
+            >
+              <h5 class="text-center text-secondary mb-0 w-100">Ranking Global Completo</h5>
+            </button>
+          </h2>
+          <div
+            id="collapseGlobalRanking"
+            class="accordion-collapse collapse"
+            aria-labelledby="headingGlobal"
+            data-bs-parent="#globalRankingAccordion"
+          >
+            <div class="accordion-body p-0">
+              <div class="table-responsive">
+                <table class="table table-striped table-hover table-sm align-middle mb-0">
+                  <thead class="bg-secondary text-white">
+                    <tr>
+                      <th class="text-center">Posición</th>
+                      <th class="text-center">Usuario</th>
+                      <th class="text-center">Aciertos Totales</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let usuario of rankingGlobal; let i = index">
+                      <td class="text-center">{{i + 1}}</td>
+                      <td class="text-center">{{usuario.nombre}}</td>
+                      <td class="text-center">{{usuario.aciertosTotales}}</td>
+                    </tr>
+                    <tr *ngIf="rankingGlobal.length === 0">
+                      <td colspan="3" class="text-center text-muted">No hay datos disponibles</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

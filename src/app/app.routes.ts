@@ -7,6 +7,8 @@ import { LoginComponent } from './login/login.component';
 import { PuntajeComponent } from './puntajes/puntajes.component';
 import { RankingComponent } from './ranking/ranking.component';
 import { StreakComponent } from './streak/streak.component';
+import { ProgresoComponent } from './progreso/progreso.component';
+import { PopularCategoriesComponent } from './popular-categories/popular-categories.component';
 
 export const routes: Routes = [
     { path: 'home', component: HomeComponent },
@@ -17,5 +19,7 @@ export const routes: Routes = [
     { path: 'ranking', component: RankingComponent },
     { path: 'niveles/:categoria', component: NivelesComponent },
     { path: 'juego/:categoria/:level', component: JuegoComponent },
+    { path: 'progreso', component: ProgresoComponent },
+    { path: 'popular-categories', component: PopularCategoriesComponent },
     { path: '**', pathMatch: 'full', redirectTo: 'home'}
 ];

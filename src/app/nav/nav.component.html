@@ -7,13 +7,9 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <!-- Mostrar "Registrarse" e "Iniciar sesión" solo si no hay un usuario logueado -->
-        <li class="nav-item" *ngIf="!username">
-          <a class="nav-link blanco" href="register">Registrarse</a>
-        </li>
-        <li class="nav-item" *ngIf="!username">
-          <a class="nav-link blanco" href="loggin">Iniciar sesión</a>
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link blanco" href="home">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link blanco" href="puntaje">Puntajes</a>
@@ -25,18 +21,52 @@
           <a class="nav-link blanco" href="racha">Racha</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link blanco" href="#">-</a>
+          <a class="nav-link blanco" href="progreso">Progreso</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link blanco" href="popular-categories">Favoritas</a>
         </li>
       </ul>
-      <!-- Mostrar el nombre de usuario o "Bienvenido, Invitado" -->
-      <span class="navbar-text blanco">
-        Bienvenido, {{ username || 'Invitado' }}, Ranking: Usuario {{userId}}
-      </span>
-    
-      <!-- Mostrar el botón de cerrar sesión solo si hay un usuario -->
-      <button *ngIf="username" (click)="logout()" class="btn btn-outline-danger ms-3 blanco">
-        Cerrar sesión
-      </button>
+
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center" *ngIf="username">
+        <li class="nav-item me-3">
+          <span class="navbar-text blanco me-2">
+            Bienvenido, {{ username }}
+          </span>
+        </li>
+
+        <li class="nav-item me-3">
+          <span class="navbar-text blanco">
+            Ranking:
+            <ng-container *ngIf="userRankingPosition !== null">
+              <span class="badge bg-success text-white">{{ userRankingPosition }}º</span>
+              <span class="ms-1">(Score: {{ userTotalScore }})</span>
+            </ng-container>
+            <ng-container *ngIf="userRankingPosition === null">
+              <span class="text-muted">N/A</span>
+            </ng-container>
+          </span>
+        </li>
+
+        <li class="nav-item">
+          <button (click)="logout()" class="btn btn-outline-light">
+            Cerrar sesión
+          </button>
+        </li>
+      </ul>
+
+      <div class="d-flex align-items-center ms-auto" *ngIf="!username">
+        <span class="navbar-text blanco me-3">
+          Bienvenido, Invitado
+        </span>
+        <button class="btn btn-outline-light me-2" (click)="router.navigate(['/register'])">
+          Registrarse
+        </button>
+        <button class="btn btn-light" (click)="router.navigate(['/loggin'])">
+          Iniciar sesión
+        </button>
+      </div>
+
     </div>
   </div>
 </nav>

@@ -42,10 +42,10 @@ export class LoginComponent {
     const { username, password } = this.loginForm.value;
 
     this.http
-      .post('https://next-eel-firmly.ngrok-free.app/getProfile', { username, password })
+      .post('https://roughly-expert-rabbit.ngrok-free.app/getProfile', { username, password })
       .subscribe({
         next: (response: any) => {
-          
+
           if (response) {
             const { id } = response;
             Swal.fire({

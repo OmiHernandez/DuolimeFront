@@ -61,7 +61,7 @@ export class NivelesComponent {
    */
   getUserProgress(userId: string, category: string): void {
     this.http
-      .post('https://next-eel-firmly.ngrok-free.app/getProgress', { id: userId, category })
+      .post('https://roughly-expert-rabbit.ngrok-free.app/getProgress', { id: userId, category })
       .subscribe({
         next: (response: any) => {
           const level = parseInt(response, 10);
@@ -94,7 +94,7 @@ export class NivelesComponent {
     const nextLevel = level + 1;
 
     this.http
-      .post('https://next-eel-firmly.ngrok-free.app/registerProgress', {
+      .post('https://roughly-expert-rabbit.ngrok-free.app/registerProgress', {
         id: this.userId,
         category: this.categoria,
         newlevel: nextLevel,

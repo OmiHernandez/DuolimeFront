@@ -39,7 +39,7 @@ export class JuegoComponent implements OnInit {
   fetchPreguntas() {
     const body = { tema: this.categoria };
     this.http
-      .post<any>('https://next-eel-firmly.ngrok-free.app/obtenerPregunta', body)
+      .post<any>('https://roughly-expert-rabbit.ngrok-free.app/obtenerPregunta', body)
       .subscribe({
         next: (response) => {
           this.preguntas = response.preguntas;
@@ -72,20 +72,20 @@ export class JuegoComponent implements OnInit {
   registrarRespuesta(esCorrecta: boolean) {
     this.esRespuestaCorrecta = esCorrecta;
     this.mostrarFeedback = true;
-  
+
     if (esCorrecta) {
       this.respuestasCorrectas++;
     }
-  
+
     clearInterval(this.intervalo);
-  
+
     // Ocultar feedback después de 1.5 segundos y pasar a la siguiente pregunta
     setTimeout(() => {
       this.mostrarFeedback = false;
       this.pasoSiguiente();
     }, 1500);
   }
-  
+
   pasoSiguiente() {
     this.indicePregunta++;
     this.progreso = (this.indicePregunta / this.preguntas.length) * 100;
@@ -112,7 +112,7 @@ export class JuegoComponent implements OnInit {
       newscore: this.respuestasCorrectas.toString(),
     };
 
-    this.http.post('https://next-eel-firmly.ngrok-free.app/registerPuntaje', body).subscribe({
+    this.http.post('https://roughly-expert-rabbit.ngrok-free.app/registerPuntaje', body).subscribe({
       next: () => {
         console.log('Puntaje registrado con éxito.');
       },

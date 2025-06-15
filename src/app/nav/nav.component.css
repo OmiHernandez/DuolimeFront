@@ -1,10 +1,77 @@
 .menu {
-    background-color: #6c47bd;
-    color: white;
-}
-.navbar-brand {
-  padding: 20x;
-}
-.blanco {
+  background-color: #6c47bd;
   color: white;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.navbar-brand {
+  padding: 10px;
+}
+
+.blanco {
+  color: white !important;
+}
+
+.nav-link.blanco {
+  font-size: 1.15rem;
+  padding: 0.5rem 1rem;
+}
+
+.nav-link.blanco:hover {
+  color: white !important;
+}
+
+.navbar-text {
+  color: white !important;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  font-size: 1.05rem;
+}
+
+.navbar-text .badge {
+  font-size: 0.9em;
+  padding: 0.4em 0.6em;
+  border-radius: 0.3em;
+  margin-left: 0.5em;
+}
+
+.btn-outline-light {
+  border-color: white;
+  color: white;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.btn-outline-light:hover {
+  background-color: white;
+  color: #6c47bd;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .navbar-nav.me-auto,
+  .navbar-nav.ms-auto {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100%;
+  }
+  .navbar-nav.ms-auto .nav-item {
+    margin-bottom: 0.5rem;
+  }
+  .navbar-text {
+    justify-content: flex-start;
+    padding-left: 0.5rem;
+    font-size: 1rem;
+  }
+  .nav-link.blanco {
+    font-size: 1rem;
+  }
+  .btn-outline-light {
+    font-size: 0.9rem;
+  }
 }

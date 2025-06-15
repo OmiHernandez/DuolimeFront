@@ -1,0 +1,28 @@
+<div class="background">
+  <div class="container my-4">
+    <h1 class="text-center custom-h1 mb-4">Categorías Populares</h1>
+    <div *ngIf="isLoading" class="text-center text-white my-5">
+      <div class="spinner-border text-light" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p class="mt-3">Cargando categorías populares...</p>
+    </div>
+    <div *ngIf="!isLoading && popularCategories.length > 0" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
+      <div *ngFor="let category of popularCategories" class="col">
+        <div class="card h-100 shadow-sm popular-category-card">
+          <div class="card-body d-flex flex-column justify-content-center align-items-center">
+            <h5 class="card-title text-center">{{ category.category_name | uppercase }}</h5>
+            <div class="total-score-info">
+              <p class="score-label">Puntaje Total Acumulado:</p>
+              <p class="total-score">{{ category.total_score }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!isLoading && popularCategories.length === 0" class="col-12 text-center text-white my-5">
+      <p class="fs-4">No hay categorías populares disponibles en este momento.</p>
+      <p class="text-muted">¡Juega más para que las categorías acumulen puntajes!</p>
+    </div>
+  </div>
+</div>

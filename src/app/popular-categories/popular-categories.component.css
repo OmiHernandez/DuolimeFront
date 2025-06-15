@@ -1,0 +1,134 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.background {
+  background: linear-gradient(135deg, #401479, #ee56c8);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  font-family: 'Arial', sans-serif;
+  color: #fff;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  overflow-y: auto;
+}
+
+.container {
+  width: 95%;
+  max-width: 1200px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.custom-h1 {
+  color: #fff;
+  font-weight: bold;
+}
+
+.popular-category-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  border-radius: 0.75rem;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  color: #343a40;
+  height: 100%;
+}
+
+.popular-category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.popular-category-card .card-body {
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.popular-category-card .card-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #401479;
+  margin-bottom: 1.5rem;
+  text-transform: capitalize;
+}
+
+.total-score-info {
+  text-align: center;
+  margin-top: auto;
+}
+
+.score-label {
+  font-size: 1.1rem;
+  color: #6c757d;
+  margin-bottom: 0.25rem;
+}
+
+.total-score {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ee56c8;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  line-height: 1;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.3em;
+}
+
+@media (max-width: 991.98px) {
+  .container {
+    width: 90%;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .background {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .container {
+    width: 95%;
+  }
+  .custom-h1 {
+    font-size: 2rem;
+  }
+  .popular-category-card .card-body {
+    min-height: 120px;
+    padding: 1rem;
+  }
+  .popular-category-card .card-title {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  .score-label {
+    font-size: 1rem;
+  }
+  .total-score {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .custom-h1 {
+    font-size: 1.8rem;
+  }
+  .popular-category-card .card-title {
+    font-size: 1.2rem;
+  }
+  .score-label {
+    font-size: 0.9rem;
+  }
+  .total-score {
+    font-size: 1.8rem;
+  }
+}

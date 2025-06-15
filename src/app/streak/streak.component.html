@@ -1,14 +1,96 @@
-<div class="racha-container d-flex flex-column align-items-center justify-content-center vh-100 bg-light">
-  <div class="d-flex align-items-center flex-column flex-md-row p-4 rounded shadow-sm bg-white">
-    <img src="assets/img/streak.jpg" alt="Racha" class="streak-image me-md-4 mb-4 mb-md-0" />
-    <div class="text-center text-md-start">
-      <h3 class="display-4 mb-4">Tu Racha Actual</h3>
-      <p *ngIf="racha !== null; else loading" class="fs-2 text-danger">
-        🔥 <strong>{{ racha }}</strong> días 🔥
-      </p>
-      <ng-template #loading>
-        <p class="fs-4 text-secondary">Cargando...</p>
-      </ng-template>
+<div *ngIf="isLoggedIn" class="racha-page-container d-flex flex-column align-items-center justify-content-center bg-light">
+  <div class="racha-card shadow-lg mx-auto mb-5"> <div class="card-header text-center text-white py-3">
+      <h3 class="custom-h1 mb-0">Racha y Rankings</h3>
+    </div>
+    <div class="card-body">
+      <div class="personal-streak-section d-flex align-items-center flex-column flex-md-row p-4 rounded bg-white mb-5">
+        <img src="assets/img/streak.jpg" alt="Racha" class="streak-image me-md-4 mb-4 mb-md-0" />
+        <div class="text-center text-md-start">
+          <h3 class="display-4 mb-4 personal-streak-title">Tu Racha Actual</h3>
+          <p *ngIf="racha !== null; else loading" class="fs-2 text-danger personal-streak-value">
+            🔥 <strong>{{ racha }}</strong> días 🔥
+          </p>
+          <ng-template #loading>
+            <p class="fs-4 text-secondary personal-streak-loading">Cargando tu racha...</p>
+          </ng-template>
+          <p *ngIf="currentUserStreakPosition !== null" class="fs-5 text-muted personal-streak-position mt-3">
+            Estás en la posición <span class="badge bg-primary">{{ currentUserStreakPosition }}º</span> del ranking de rachas.
+          </p>
+          <p *ngIf="currentUserStreakPosition === null && racha !== null" class="fs-5 text-muted personal-streak-position mt-3">
+            Aún no apareces en el ranking de rachas. ¡Sigue activo!
+          </p>
+        </div>
+      </div>
+
+      <div class="rankings-section">
+        <h5 class="text-center text-secondary mb-4">Top 3 Jugadores con Racha</h5>
+        <div class="top-players-container d-flex justify-content-center flex-wrap gap-4 mb-5">
+          <ng-container *ngIf="streakRankingTopPlayers.length > 0; else noTopStreakPlayers">
+            <div *ngFor="let usuario of streakRankingTopPlayers; let i = index" class="top-player-circle d-flex flex-column justify-content-center align-items-center text-center p-2" [ngClass]="{'rank-1-streak': i === 0, 'rank-2-streak': i === 1, 'rank-3-streak': i === 2}">
+              <div class="position-badge mb-2">{{i + 1}}</div>
+              <div class="username-text mb-1">{{usuario.nombre}}</div>
+              <div class="score-text">{{usuario.rachaTotal}} días</div>
+            </div>
+          </ng-container>
+          <ng-template #noTopStreakPlayers>
+            <p class="text-center text-muted my-4">No hay jugadores top de racha disponibles.</p>
+          </ng-template>
+        </div>
+
+        <div class="d-flex justify-content-center mb-4">
+          <button class="btn btn-primary btn-lg" (click)="openGlobalStreakRankingModal()">
+            Ver Ranking Global de Rachas
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<div *ngIf="!isLoggedIn" class="racha-page-container d-flex flex-column align-items-center justify-content-center vh-100 bg-light">
+  <div class="d-flex align-items-center flex-column flex-md-row p-4 rounded shadow-sm bg-white">
+    <div class="text-center text-md-start">
+      <h3 class="display-4 mb-4">Acceso Restringido</h3>
+      <p class="fs-4 text-secondary">Debes iniciar sesión para ver tu Racha y los Rankings.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="globalStreakRankingModal" tabindex="-1" aria-labelledby="globalStreakRankingModalLabel" aria-hidden="true" [class.show]="showGlobalStreakModal" [style.display]="showGlobalStreakModal ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white rounded-t-md">
+        <h5 class="modal-title" id="globalStreakRankingModalLabel">Ranking Global de Rachas</h5>
+        <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="closeGlobalStreakRankingModal()"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="streakRankingGlobal.length > 0; else noGlobalStreakRanking">
+          <table class="table table-striped table-hover table-bordered table-responsive table-fixed">
+            <thead>
+              <tr class="table-dark">
+                <th class="text-center">Posición</th>
+                <th class="text-center">Usuario</th>
+                <th class="text-center">Racha</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let usuario of streakRankingGlobal; let i = index">
+                <td class="text-center">{{i + 1}}</td>
+                <td class="text-center">{{usuario.nombre}}</td>
+                <td class="text-center">{{usuario.rachaTotal}} días</td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-container>
+        <ng-template #noGlobalStreakRanking>
+          <p class="text-center text-muted my-4">No hay datos de ranking global de rachas disponibles.</p>
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary rounded-md" (click)="closeGlobalStreakRankingModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop fade" [class.show]="showGlobalStreakModal" *ngIf="showGlobalStreakModal"></div>

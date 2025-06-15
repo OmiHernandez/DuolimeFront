@@ -1,34 +1,50 @@
-<div>
-    <div *ngIf="username" class="bienvenida">
-        <h2>Bienvenido, {{ username }}</h2>
-        <p>Conoce tus puntajes en cada una de las categorias que existen, así como conocer tu posicionamiento entre los distintos usuarios dentro de Duolime</p>
-        <br>
-        <div class="button-container">
-            <button class="custom-button" href="puntaje">
-                <a href="puntaje">
-                    <h4>Ver puntajes</h4>
-                </a>
-            </button>
-            <button class="custom-button">
-                <a href="ranking">
-                    <h4>Ranking</h4>
-                </a>
-            </button>
-        </div>          
+<div class="home-container">
+  <section class="hero-section text-center py-5">
+    <div class="container">
+      <div *ngIf="username; else guestWelcome">
+        <h2 class="display-4 text-white mb-3 fade-in-up">Bienvenido, {{ username }}</h2>
+        <p class="lead text-white-50 mx-auto mb-4 fade-in-up delay-1">
+          Explora tus puntajes en diversas categorías y descubre tu posición
+          entre los usuarios de Duolime. ¡Aprende y compite!
+        </p>
+        <div class="button-container fade-in-up delay-2">
+          <button class="btn custom-button-hero" (click)="router.navigate(['/puntaje'])">
+            Ver Puntajes
+          </button>
+          <button class="btn custom-button-hero" (click)="router.navigate(['/ranking'])">
+            Ver Ranking
+          </button>
+        </div>
+      </div>
+
+      <ng-template #guestWelcome>
+        <h2 class="display-4 text-white mb-3 fade-in-up">¡Guarda tu progreso!</h2>
+        <p class="lead text-white-50 mx-auto mb-4 fade-in-up delay-1">
+          Inicia sesión para guardar tus puntajes, seguir tu progreso y competir
+          por un lugar entre los mejores en Duolime.
+        </p>
+        <div class="button-container fade-in-up delay-2">
+          <button class="btn custom-button-hero" (click)="router.navigate(['/loggin'])">
+            Iniciar Sesión
+          </button>
+          <button class="btn custom-button-hero btn-register" (click)="router.navigate(['/register'])">
+            Registrarse
+          </button>
+        </div>
+      </ng-template>
     </div>
-    <div *ngIf="!username" class="bienvenida">
-        <h2>¡Guarda tu progreso!</h2>
-        <p>Inicia sesión para que puedas guardar cada uno de tus puntajes y participar para ser de los mejores dentro de Duolime</p>
-        <br>
-        <div class="button-container">
-            <button class="custom-button" href="puntaje">
-                <a href="loggin">
-                    <h4>Iniciar sesión</h4>
-                </a>
-            </button>
-        </div>          
+  </section>
+
+  <section class="categories-section py-5">
+    <div class="container">
+      <h2 *ngIf="username" class="text-center text-white mb-5 section-title">Explora Nuestras Categorías</h2>
+      <app-categories *ngIf="username"></app-categories>
+
+      <div *ngIf="!username" class="text-center text-white my-5 guest-message-categories">
+        <p class="fs-4">Inicia sesión para explorar las categorías y comenzar a jugar.</p>
+        <p class="text-muted">¡Te esperamos para que demuestres tus conocimientos!</p>
+      </div>
     </div>
-    <br>
-    <app-categories></app-categories>
-    <br><br>
+  </section>
+
 </div>

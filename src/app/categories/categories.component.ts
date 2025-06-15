@@ -91,7 +91,7 @@ export class CategoriesComponent implements AfterViewInit, OnInit {
   // Método para obtener las categorías desde el backend
   getCategories(): void {
     this.http
-      .post('https://next-eel-firmly.ngrok-free.app/getCategories', {})
+      .post('https://roughly-expert-rabbit.ngrok-free.app/getCategories', {})
       .subscribe(
         (response: any) => {
           console.log('Categorías obtenidas:', response);
