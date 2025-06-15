@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-niveles',
@@ -10,13 +11,15 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './niveles.component.html',
   styleUrls: ['./niveles.component.css'],
 })
-export class NivelesComponent {
-  categoria: string | null = null;
+export class NivelesComponent implements OnInit {
+  categoryId: string | null = null;
+  categoryName: string | null = null;
   backgroundStyle = '';
-  userId: string | null = localStorage.getItem('userId');
+  userId: string | null = null;
+  isLoggedIn: boolean = false;
   levels = Array.from({ length: 10 }, (_, index) => ({
-    number: index + 1, // Nivel (del 1 al 10)
-    unlocked: index === 0, // El nivel 1 está desbloqueado por defecto
+    number: index + 1,
+    unlocked: false,
   }));
 
   constructor(
@@ -26,17 +29,64 @@ export class NivelesComponent {
   ) {}
 
   ngOnInit(): void {
-    this.categoria = this.route.snapshot.paramMap.get('categoria');
+    this.userId = localStorage.getItem('userId');
+    this.isLoggedIn = this.userId !== null && this.userId.trim() !== '';
+
+    const categoryIdParam = this.route.snapshot.paramMap.get('categoryId');
+    this.categoryId = categoryIdParam;
+    this.categoryName = this.route.snapshot.paramMap.get('categoryName');
+
+    console.group('[NivelesComponent DEBUG] ngOnInit - Estado de Inicialización');
+    console.log(`1. userId de localStorage (al inicio de ngOnInit): '${this.userId}'`);
+    console.log(`2. isLoggedIn (calculado): ${this.isLoggedIn}`);
+    console.log(`3. categoryId de ruta: '${this.categoryId}' (tipo: ${typeof this.categoryId})`);
+    console.log(`4. categoryName de ruta: '${this.categoryName}' (tipo: ${typeof this.categoryName})`);
+    console.groupEnd();
+
     this.updateBackground();
 
-    if (this.userId && this.categoria) {
-      this.getUserProgress(this.userId, this.categoria);
+    if (this.levels.length > 0) {
+      this.levels[0].unlocked = true;
+    }
+
+    const isCategoryValid =
+      this.categoryId !== null &&
+      this.categoryId.trim() !== '' &&
+      this.categoryName !== null &&
+      this.categoryName.trim() !== '';
+
+    if (this.isLoggedIn && isCategoryValid) {
+      console.log(
+        '[NivelesComponent DEBUG] Condición de acceso CUMPLIDA: Usuario logueado Y datos de categoría válidos. Intentando cargar progreso...'
+      );
+      this.getUserProgress(this.userId!, this.categoryId!);
+    } else {
+      console.warn('[NivelesComponent DEBUG] Condición de acceso FALLIDA: Mostrando alerta.');
+      console.warn(
+        `   Motivo - isLoggedIn: ${this.isLoggedIn} (userId: '${localStorage.getItem('userId')}')`
+      );
+      console.warn(
+        `   Motivo - isCategoryValid: ${isCategoryValid} (categoryId: '${this.categoryId}', categoryName: '${this.categoryName}')`
+      );
+
+      Swal.fire({
+        icon: 'warning',
+        title: 'Acceso Restringido',
+        text: 'Para ver y jugar los niveles, debes iniciar sesión Y la categoría debe cargarse correctamente. Por favor, inicia sesión.',
+        confirmButtonText: 'Ir a Login',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.router.navigate(['/loggin']);
+        } else {
+          this.router.navigate(['/home']);
+        }
+      });
     }
   }
 
-  /**
-   * Actualiza los estilos de fondo según la categoría
-   */
   updateBackground(): void {
     const backgroundStyles: { [key: string]: string } = {
       Banderas: 'linear-gradient(to bottom, #ff3200, #ff8b00)',
@@ -52,71 +102,66 @@ export class NivelesComponent {
       Videojuegos: 'linear-gradient(to bottom, #f000d3, #f0006d)',
       Música: 'linear-gradient(to bottom, #f0007f, #f00000)',
     };
-
-    this.backgroundStyle = backgroundStyles[this.categoria || ''] || '';
+    this.backgroundStyle = backgroundStyles[this.categoryName || ''] || '';
   }
 
-  /**
-   * Obtiene el progreso del usuario desde el backend
-   */
-  getUserProgress(userId: string, category: string): void {
+  getUserProgress(userId: string, categoryId: string): void {
     this.http
-      .post('https://roughly-expert-rabbit.ngrok-free.app/getProgress', { id: userId, category })
-      .subscribe({
-        next: (response: any) => {
-          const level = parseInt(response, 10);
-          this.unlockLevelsUpTo(level);
-        },
-        error: (err) => {
-          console.error('Error al obtener el progreso del usuario:', err);
-        },
-      });
-  }
-
-  /**
-   * Desbloquea niveles hasta el especificado
-   */
-  unlockLevelsUpTo(level: number): void {
-    this.levels.forEach((lvl, index) => {
-      lvl.unlocked = index < level; // Desbloquea hasta el nivel actual
-    });
-  }
-
-  /**
-   * Registra el progreso y desbloquea el siguiente nivel
-   */
-  registerProgressAndUnlock(level: number): void {
-    if (!this.userId || !this.categoria) {
-      console.error('No se encontró el usuario o categoría.');
-      return;
-    }
-
-    const nextLevel = level + 1;
-
-    this.http
-      .post('https://roughly-expert-rabbit.ngrok-free.app/registerProgress', {
-        id: this.userId,
-        category: this.categoria,
-        newlevel: nextLevel,
+      .post('https://roughly-expert-rabbit.ngrok-free.app/getProgress', {
+        id: userId,
+        category: categoryId,
       })
       .subscribe({
-        next: () => {
-          console.log('Progreso registrado correctamente.');
-          this.unlockLevelsUpTo(nextLevel);
+        next: (response: any) => {
+          const highestAvailableLevel = parseInt(response, 10);
+          console.log(
+            `[NivelesComponent] Progreso obtenido para Cat ID '${categoryId}': Nivel más alto DISPONIBLE = ${highestAvailableLevel}`
+          );
+          this.unlockLevelsUpTo(highestAvailableLevel);
         },
         error: (err) => {
-          console.error('Error al registrar el progreso:', err);
+          console.warn(
+            `[NivelesComponent] Error o no progreso encontrado para Cat ID '${categoryId}'. Asumiendo nivel 1 disponible. Error:`,
+            err
+          );
+          this.unlockLevelsUpTo(1);
         },
       });
   }
 
-  /**
-   * Navega al nivel seleccionado
-   */
-  navigateToSlide(category: string | null, level: number): void {
-    if (category && this.levels[level - 1].unlocked) {
-      this.registerProgressAndUnlock(level); // Registrar progreso al intentar un nivel
-      this.router.navigate(['/juego', category, level]);
+  unlockLevelsUpTo(highestAvailableLevel: number): void {
+    this.levels.forEach((lvl) => {
+      lvl.unlocked = lvl.number <= highestAvailableLevel;
+    });
+    if (this.levels.length > 0) {
+      this.levels[0].unlocked = true;
+    }
+    console.log(
+      '[NivelesComponent] Estado de niveles después de unlockLevelsUpTo:',
+      this.levels.map((l) => ({ number: l.number, unlocked: l.unlocked }))
+    );
+  }
+
+  navigateToSlide(categoryId: string | null, categoryName: string | null, levelNumber: number): void {
+    if (
+      categoryId !== null &&
+      categoryName !== null &&
+      this.levels[levelNumber - 1].unlocked
+    ) {
+      console.log(
+        `[NivelesComponent] Navegando a /juego/${categoryId}/${categoryName}/${levelNumber}`
+      );
+      this.router.navigate(['/juego', categoryId, categoryName, levelNumber]);
+    } else {
+      console.warn(
+        `[NivelesComponent] Nivel ${levelNumber} está bloqueado para la categoría ${categoryName} o faltan datos de categoría.`
+      );
+      Swal.fire({
+        icon: 'info',
+        title: 'Nivel Bloqueado',
+        text: `Debes completar el nivel ${levelNumber - 1} para desbloquear este nivel. ¡Buena suerte!`,
+        confirmButtonText: 'Entendido',
+      });
     }
   }
 }

@@ -11,15 +11,16 @@ import { ProgresoComponent } from './progreso/progreso.component';
 import { PopularCategoriesComponent } from './popular-categories/popular-categories.component';
 
 export const routes: Routes = [
-    { path: 'home', component: HomeComponent },
-    { path: 'racha', component: StreakComponent },
-    { path: 'register', component: RegisterComponent },
-    { path: 'loggin', component: LoginComponent },
-    { path: 'puntaje', component: PuntajeComponent },
-    { path: 'ranking', component: RankingComponent },
-    { path: 'niveles/:categoria', component: NivelesComponent },
-    { path: 'juego/:categoria/:level', component: JuegoComponent },
-    { path: 'progreso', component: ProgresoComponent },
-    { path: 'popular-categories', component: PopularCategoriesComponent },
-    { path: '**', pathMatch: 'full', redirectTo: 'home'}
+  { path: 'home', component: HomeComponent },
+  { path: 'racha', component: StreakComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'loggin', component: LoginComponent },
+  { path: 'puntaje', component: PuntajeComponent },
+  { path: 'ranking', component: RankingComponent },
+  { path: 'progreso', component: ProgresoComponent },
+  { path: 'popular-categories', component: PopularCategoriesComponent },
+  { path: 'niveles/:categoryId/:categoryName', component: NivelesComponent },
+  { path: 'juego/:categoryId/:categoryName/:level', component: JuegoComponent },
+
+  { path: '**', pathMatch: 'full', redirectTo: 'home'}
 ];

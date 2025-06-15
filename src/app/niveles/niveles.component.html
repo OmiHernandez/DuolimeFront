@@ -1,21 +1,11 @@
-<html>
-
-<head>
-  <title>{{ categoria }}</title>
-  <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-    rel="stylesheet"
-  />
-</head>
-
-<body [ngStyle]="{ background: backgroundStyle }">
+<div class="niveles-main-container" [ngStyle]="{ background: backgroundStyle }">
   <div class="container">
-    <div class="header">{{ categoria | uppercase }}</div>
+    <div class="header">{{ categoryName | uppercase }}</div>
     <div class="level">
       <span
         *ngFor="let level of levels; let i = index"
         [class.unlocked]="level.unlocked"
-        (click)="navigateToSlide(categoria, level.number)"
+        (click)="navigateToSlide(categoryId, categoryName, level.number)"
         [title]="level.unlocked ? 'Desbloqueado' : 'Bloqueado'"
       >
         {{ level.number }}
@@ -26,6 +16,4 @@
       Volver al menú
     </a>
   </div>
-</body>
-
-</html>
+</div>

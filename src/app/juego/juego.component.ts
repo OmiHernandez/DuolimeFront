@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-juego',
@@ -10,19 +12,24 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './juego.component.html',
   styleUrl: './juego.component.css',
 })
-export class JuegoComponent implements OnInit {
-  categoria: string | null = null;
-  level: string | null = null;
+export class JuegoComponent implements OnInit, OnDestroy {
+  categoryId: string | null = null;
+  categoryName: string | null = null;
+  level: number | null = null;
   preguntas: any[] = [];
   currentIndex: number = 0;
   respuestasCorrectas: number = 0;
   juegoTerminado: boolean = false;
-  indicePregunta = 0;
+  indicePregunta: number = 0;
   tiempoRestante = 20;
   progreso = 0;
   intervalo: any;
   mostrarFeedback: boolean = false;
   esRespuestaCorrecta: boolean = false;
+  userId: string | null = null;
+
+  private SUCCESS_THRESHOLD_PERCENTAGE = 0.7;
+  private MAX_LEVELS_IN_CATEGORY = 10;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,13 +38,51 @@ export class JuegoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.categoria = this.route.snapshot.paramMap.get('categoria');
-    this.level = this.route.snapshot.paramMap.get('level');
+    this.userId = localStorage.getItem('userId');
+    if (!this.userId) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'No logueado',
+        text: 'Debes iniciar sesión para jugar y guardar tu progreso.',
+        confirmButtonText: 'Ir a Login',
+      }).then(() => {
+        this.router.navigate(['/loggin']);
+      });
+      return;
+    }
+
+    this.categoryId = this.route.snapshot.paramMap.get('categoryId');
+    this.categoryName = this.route.snapshot.paramMap.get('categoryName');
+    const levelParam = this.route.snapshot.paramMap.get('level');
+    this.level = levelParam ? parseInt(levelParam, 10) : null;
+
+    console.group('[JuegoComponent DEBUG] ngOnInit - Parámetros de Ruta');
+    console.log(`1. categoryId de ruta: '${this.categoryId}' (tipo: ${typeof this.categoryId})`);
+    console.log(`2. categoryName de ruta: '${this.categoryName}' (tipo: ${typeof this.categoryName})`);
+    console.log(`3. level de ruta: ${this.level} (tipo: ${typeof this.level})`);
+    console.groupEnd();
+
+    if (
+      !this.categoryId ||
+      this.categoryId.trim() === '' ||
+      !this.categoryName ||
+      this.categoryName.trim() === '' ||
+      this.level === null
+    ) {
+      console.error('Categoría ID, nombre o nivel no proporcionados o son inválidos en la URL.');
+      this.router.navigate(['/home']);
+      return;
+    }
+
     this.fetchPreguntas();
   }
 
+  ngOnDestroy(): void {
+    clearInterval(this.intervalo);
+  }
+
   fetchPreguntas() {
-    const body = { tema: this.categoria };
+    const body = { tema: this.categoryName };
     this.http
       .post<any>('https://roughly-expert-rabbit.ngrok-free.app/obtenerPregunta', body)
       .subscribe({
@@ -45,15 +90,26 @@ export class JuegoComponent implements OnInit {
           this.preguntas = response.preguntas;
           if (this.preguntas && this.preguntas.length > 0) {
             this.iniciarTemporizador();
+          } else {
+            console.warn('No se recibieron preguntas para esta categoría.');
+            this.juegoTerminado = true;
           }
         },
         error: (err) => {
           console.error('Error al obtener las preguntas', err);
+          this.juegoTerminado = true;
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de preguntas',
+            text: 'No se pudieron cargar las preguntas para esta categoría.',
+          });
         },
       });
   }
 
   iniciarTemporizador() {
+    clearInterval(this.intervalo);
+    this.tiempoRestante = 20;
     this.intervalo = setInterval(() => {
       if (this.tiempoRestante > 0) {
         this.tiempoRestante--;
@@ -64,6 +120,7 @@ export class JuegoComponent implements OnInit {
   }
 
   responder(opcion: 'F' | 'V') {
+    if (this.mostrarFeedback) return;
     const respuestaCorrecta =
       this.preguntas[this.indicePregunta].respuesta === opcion;
     this.registrarRespuesta(respuestaCorrecta);
@@ -72,14 +129,10 @@ export class JuegoComponent implements OnInit {
   registrarRespuesta(esCorrecta: boolean) {
     this.esRespuestaCorrecta = esCorrecta;
     this.mostrarFeedback = true;
-
     if (esCorrecta) {
       this.respuestasCorrectas++;
     }
-
     clearInterval(this.intervalo);
-
-    // Ocultar feedback después de 1.5 segundos y pasar a la siguiente pregunta
     setTimeout(() => {
       this.mostrarFeedback = false;
       this.pasoSiguiente();
@@ -89,57 +142,122 @@ export class JuegoComponent implements OnInit {
   pasoSiguiente() {
     this.indicePregunta++;
     this.progreso = (this.indicePregunta / this.preguntas.length) * 100;
-
     if (this.indicePregunta < this.preguntas.length) {
       this.tiempoRestante = 20;
       this.iniciarTemporizador();
     } else {
       this.juegoTerminado = true;
-      this.enviarPuntaje();
+      this.enviarResultadosFinales();
     }
   }
 
-  enviarPuntaje() {
-    const userId = localStorage.getItem('userId'); // ID del usuario en localStorage
-    if (!userId || !this.categoria) {
-      console.error('ID de usuario o categoría no encontrados.');
+  async enviarResultadosFinales(): Promise<void> {
+    if (
+      !this.userId ||
+      !this.categoryId || this.categoryId.trim() === '' ||
+      !this.categoryName || this.categoryName.trim() === '' ||
+      this.level === null
+    ) {
+      console.error('Datos incompletos para enviar resultados finales.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de envío',
+        text: 'No se pudo guardar tu progreso o puntaje. Vuelve a intentarlo.',
+      });
       return;
     }
 
-    const body = {
-      id: userId,
-      category: this.categoria,
-      newscore: this.respuestasCorrectas.toString(),
-    };
+    try {
+      const puntajeBody = {
+        id: this.userId,
+        category: this.categoryId,
+        newscore: this.respuestasCorrectas.toString(),
+        level: this.level,
+      };
+      await lastValueFrom(
+        this.http.post(
+          'https://roughly-expert-rabbit.ngrok-free.app/registerPuntaje',
+          puntajeBody
+        )
+      );
+      console.log('Puntaje registrado con éxito.');
 
-    this.http.post('https://roughly-expert-rabbit.ngrok-free.app/registerPuntaje', body).subscribe({
-      next: () => {
-        console.log('Puntaje registrado con éxito.');
-      },
-      error: (err) => {
-        console.error('Error al registrar el puntaje', err);
-      },
-    });
+      const totalQuestions = this.preguntas.length;
+      const scorePercentage =
+        totalQuestions > 0 ? this.respuestasCorrectas / totalQuestions : 0;
+      const currentLevelNumber = this.level;
+
+      if (
+        scorePercentage >= this.SUCCESS_THRESHOLD_PERCENTAGE &&
+        currentLevelNumber < this.MAX_LEVELS_IN_CATEGORY
+      ) {
+        let highestCompletedLevelForCategory: number = 0;
+        try {
+          const progressResponse: any = await lastValueFrom(
+            this.http.post(
+              'https://roughly-expert-rabbit.ngrok-free.app/getProgress',
+              { id: this.userId, category: this.categoryId }
+            )
+          );
+          highestCompletedLevelForCategory = parseInt(progressResponse, 10);
+        } catch (error) {
+          console.warn('No se encontró progreso previo, asumiendo 0 o 1:', error);
+          highestCompletedLevelForCategory = 0;
+        }
+
+        if (currentLevelNumber >= highestCompletedLevelForCategory) {
+          const nextLevelToUnlock = currentLevelNumber + 1;
+
+          const progressBody = {
+            id: this.userId,
+            category: this.categoryId,
+            newlevel: nextLevelToUnlock,
+          };
+          await lastValueFrom(
+            this.http.post(
+              'https://roughly-expert-rabbit.ngrok-free.app/registerProgress',
+              progressBody
+            )
+          );
+          console.log(
+            `Progreso de nivel actualizado a ${nextLevelToUnlock} para la categoría ID '${this.categoryId}'.`
+          );
+          Swal.fire({
+            icon: 'success',
+            title: '¡Nivel Completado!',
+            text: `Has completado el Nivel ${currentLevelNumber} con éxito. ¡El Nivel ${nextLevelToUnlock} está desbloqueado!`,
+          });
+        } else {
+          console.log(
+            'Nivel completado, pero no se actualiza progreso porque ya tiene un nivel más alto registrado.'
+          );
+          Swal.fire({
+            icon: 'success',
+            title: '¡Nivel Completado!',
+            text: `Has completado el Nivel ${currentLevelNumber} con éxito.`,
+          });
+        }
+      } else {
+        let message = `Has terminado el Nivel ${currentLevelNumber}. Respuestas correctas: ${this.respuestasCorrectas} de ${totalQuestions}.`;
+        if (scorePercentage < this.SUCCESS_THRESHOLD_PERCENTAGE) {
+          message += ` Necesitas al menos ${this.SUCCESS_THRESHOLD_PERCENTAGE * 100}% para desbloquear el siguiente nivel.`;
+        } else if (currentLevelNumber === this.MAX_LEVELS_IN_CATEGORY) {
+          message = `¡Felicidades! Has completado el último nivel (${currentLevelNumber}) de esta categoría.`;
+        }
+
+        Swal.fire({
+          icon: 'info',
+          title: 'Juego Terminado',
+          text: message,
+        });
+      }
+    } catch (error) {
+      console.error('Error al registrar el puntaje o progreso:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de guardado',
+        text: 'Hubo un problema al guardar tus resultados. Inténtalo de nuevo.',
+      });
+    }
   }
 }
-// Quiz terminado
-//alert(`¡Quiz finalizado! Respuestas correctas: ${this.respuestasCorrectas}`);
-
-// Maneja la selección de la respuesta
-/*seleccionarRespuesta(respuesta: string) {
-    this.respuestaSeleccionada = respuesta;
-
-    // Verifica si la respuesta seleccionada es correcta
-    if (this.respuestaSeleccionada === this.preguntas[this.currentIndex]?.respuesta) {
-      this.respuestasCorrectas++;
-    }
-
-    // Verifica si hay más preguntas
-    if (this.currentIndex < this.preguntas.length - 1) {
-      this.currentIndex++;
-      this.respuestaSeleccionada = null; // Resetea la respuesta seleccionada
-    } else {
-      // Finaliza el juego
-      this.juegoTerminado = true;
-    }
-  }*/

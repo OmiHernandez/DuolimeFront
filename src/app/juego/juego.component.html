@@ -56,7 +56,7 @@
   </div>
 </ng-template>
 
-<div *ngIf="mostrarFeedback" class="feedback" 
+<div *ngIf="mostrarFeedback" class="feedback"
      [ngClass]="{ 'correcto': esRespuestaCorrecta, 'incorrecto': !esRespuestaCorrecta }">
   <p>{{ esRespuestaCorrecta ? '¡Correcto!' : 'Incorrecto' }}</p>
 </div>
