@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { lastValueFrom } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-juego',
@@ -147,11 +147,11 @@ export class JuegoComponent implements OnInit, OnDestroy {
       this.iniciarTemporizador();
     } else {
       this.juegoTerminado = true;
-      this.enviarResultadosFinales();
+      this.enviarResultsFinales();
     }
   }
 
-  async enviarResultadosFinales(): Promise<void> {
+  async enviarResultsFinales(): Promise<void> {
     if (
       !this.userId ||
       !this.categoryId || this.categoryId.trim() === '' ||
@@ -186,6 +186,10 @@ export class JuegoComponent implements OnInit, OnDestroy {
       const scorePercentage =
         totalQuestions > 0 ? this.respuestasCorrectas / totalQuestions : 0;
       const currentLevelNumber = this.level;
+
+      let finalSwalTitle: string;
+      let finalSwalText: string;
+      let finalSwalIcon: 'success' | 'info' | 'warning' | 'error' = 'info';
 
       if (
         scorePercentage >= this.SUCCESS_THRESHOLD_PERCENTAGE &&
@@ -222,35 +226,39 @@ export class JuegoComponent implements OnInit, OnDestroy {
           console.log(
             `Progreso de nivel actualizado a ${nextLevelToUnlock} para la categoría ID '${this.categoryId}'.`
           );
-          Swal.fire({
-            icon: 'success',
-            title: '¡Nivel Completado!',
-            text: `Has completado el Nivel ${currentLevelNumber} con éxito. ¡El Nivel ${nextLevelToUnlock} está desbloqueado!`,
-          });
+          finalSwalTitle = '¡Nivel Completado!';
+          finalSwalText = `Has completado el Nivel ${currentLevelNumber} con éxito. ¡El Nivel ${nextLevelToUnlock} está desbloqueado!`;
+          finalSwalIcon = 'success';
         } else {
           console.log(
             'Nivel completado, pero no se actualiza progreso porque ya tiene un nivel más alto registrado.'
           );
-          Swal.fire({
-            icon: 'success',
-            title: '¡Nivel Completado!',
-            text: `Has completado el Nivel ${currentLevelNumber} con éxito.`,
-          });
+          finalSwalTitle = '¡Nivel Completado!';
+          finalSwalText = `Has completado el Nivel ${currentLevelNumber} con éxito.`;
+          finalSwalIcon = 'success';
         }
       } else {
         let message = `Has terminado el Nivel ${currentLevelNumber}. Respuestas correctas: ${this.respuestasCorrectas} de ${totalQuestions}.`;
         if (scorePercentage < this.SUCCESS_THRESHOLD_PERCENTAGE) {
           message += ` Necesitas al menos ${this.SUCCESS_THRESHOLD_PERCENTAGE * 100}% para desbloquear el siguiente nivel.`;
+          finalSwalIcon = 'warning';
         } else if (currentLevelNumber === this.MAX_LEVELS_IN_CATEGORY) {
           message = `¡Felicidades! Has completado el último nivel (${currentLevelNumber}) de esta categoría.`;
+          finalSwalIcon = 'info';
         }
-
-        Swal.fire({
-          icon: 'info',
-          title: 'Juego Terminado',
-          text: message,
-        });
+        finalSwalTitle = 'Juego Terminado';
+        finalSwalText = message;
       }
+
+      await Swal.fire({
+        icon: finalSwalIcon,
+        title: finalSwalTitle,
+        text: finalSwalText,
+        confirmButtonText: 'Continuar'
+      });
+
+      this.router.navigate(['/puntajes']);
+
     } catch (error) {
       console.error('Error al registrar el puntaje o progreso:', error);
       Swal.fire({

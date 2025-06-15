@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, NavigationEnd, Event as RouterEvent } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nav',
@@ -17,7 +18,16 @@ import { lastValueFrom } from 'rxjs';
 export class NavComponent implements OnInit {
   userRankingPosition: number | null = null;
   userTotalScore: number | null = null;
-  constructor(public router: Router, private http: HttpClient) {}
+
+  constructor(public router: Router, private http: HttpClient) {
+    this.router.events.pipe(
+      filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      if (this.username) {
+        this.getUserRankingPosition();
+      }
+    });
+  }
 
   ngOnInit(): void {
     if (this.username) {
@@ -34,6 +44,12 @@ export class NavComponent implements OnInit {
   }
 
   async getUserRankingPosition(): Promise<void> {
+    if (!this.userId) {
+        this.userRankingPosition = null;
+        this.userTotalScore = null;
+        return;
+    }
+
     try {
       const response: any = await lastValueFrom(
         this.http.post('https://roughly-expert-rabbit.ngrok-free.app/getRanking', {})
@@ -55,8 +71,8 @@ export class NavComponent implements OnInit {
           this.userTotalScore = globalRanking[foundIndex].totalScore;
         } else {
           this.userRankingPosition = null;
-          this.userTotalScore = null;
-          console.warn('Usuario actual no encontrado en el ranking global del NavComponent.');
+          this.userTotalScore = 0;
+          console.warn('Usuario actual no encontrado en el ranking global del NavComponent o tiene 0 puntos.');
         }
 
       } else {
@@ -75,5 +91,7 @@ export class NavComponent implements OnInit {
     localStorage.removeItem('username');
     localStorage.removeItem('userId');
     this.router.navigate(['/loggin']);
+    this.userRankingPosition = null;
+    this.userTotalScore = null;
   }
 }
