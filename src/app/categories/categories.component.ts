@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, ViewChild, ElementRef } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  CUSTOM_ELEMENTS_SCHEMA,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
@@ -13,7 +20,7 @@ register();
   imports: [CommonModule, RouterModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './categories.component.html',
-  styleUrls: ['./categories.component.css']
+  styleUrls: ['./categories.component.css'],
 })
 export class CategoriesComponent implements AfterViewInit, OnInit {
   @ViewChild('swiper') swiper!: ElementRef<any>;
@@ -21,6 +28,7 @@ export class CategoriesComponent implements AfterViewInit, OnInit {
   constructor(private http: HttpClient, private router: Router) {}
 
   slides: any[] = [];
+  swiperInitialized = false;
 
   slidesPerView = 1;
   spaceBetween = 25;
@@ -38,15 +46,42 @@ export class CategoriesComponent implements AfterViewInit, OnInit {
 
   // Evento para cambiar el fondo según el slide activo
   onSlideChange(event: Event) {
+    if (!this.swiperInitialized || this.slides.length === 0) return;
     const swiperEl = event.target as any;
+    if (!swiperEl.swiper) {
+      console.warn('Swiper instance not available');
+      return;
+    }
     const activeIndex = swiperEl.swiper.activeIndex;
-    const activeSlide = swiperEl.querySelectorAll('swiper-slide')[activeIndex];
+    const slides = swiperEl.querySelectorAll('swiper-slide');
+
+    // Verificar que exista el slide activo
+    if (!slides || slides.length <= activeIndex) {
+      console.warn('Active slide not found');
+      return;
+    }
+
+    const activeSlide = slides[activeIndex];
     const newBgColor = activeSlide.getAttribute('data-bg');
-    document.body.style.backgroundColor = newBgColor;
+    if (newBgColor) {
+      document.body.style.backgroundColor = newBgColor;
+    }
   }
 
   ngAfterViewInit(): void {
-    this.swiper.nativeElement.initialize();
+    if (this.slides.length > 0) {
+      this.initializeSwiper();
+    }
+  }
+
+  private initializeSwiper() {
+    try {
+      this.swiper.nativeElement.initialize();
+      this.swiperInitialized = true;
+      console.log('Swiper initialized successfully');
+    } catch (error) {
+      console.error('Swiper initialization failed:', error);
+    }
   }
 
   ngOnInit(): void {
@@ -55,16 +90,21 @@ export class CategoriesComponent implements AfterViewInit, OnInit {
 
   // Método para obtener las categorías desde el backend
   getCategories(): void {
-    this.http.post('https://liked-walleye-trusting.ngrok-free.app/getCategories', {})
+    this.http
+      .post('https://next-eel-firmly.ngrok-free.app/getCategories', {})
       .subscribe(
         (response: any) => {
+          console.log('Categorías obtenidas:', response);
           this.slides = response.map((category: any) => ({
-            name: category.name[0] || 'Sin nombre',
-            description: category.description[0] || '',
-            image: category.image[0] || '../assets/img/default.jpg',
-            bgColor: category.bgColor[0] || '#ffffff',
-            parametro: category.parametro[0] || category.name[0],
+            id: category.id,
+            name: category.name || 'Sin nombre',
+            // Valores por defecto para propiedades faltantes
+            description: 'Descripción no disponible',
+            image: '../assets/img/vi.jpg',
+            bgColor: this.getRandomColor(), // Generar color aleatorio
+            parametro: category.name, // Usar ID como parámetro
           }));
+          this.initializeSwiper();
         },
         (error) => {
           console.error('Error al obtener categorías:', error);
@@ -72,6 +112,14 @@ export class CategoriesComponent implements AfterViewInit, OnInit {
       );
   }
 
+  private getRandomColor(): string {
+    return (
+      '#' +
+      Math.floor(Math.random() * 16777215)
+        .toString(16)
+        .padStart(6, '0')
+    );
+  }
 
   navigateToSlide(categoria: any): void {
     this.router.navigate(['/niveles', categoria]);

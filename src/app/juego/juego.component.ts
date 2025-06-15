@@ -39,7 +39,7 @@ export class JuegoComponent implements OnInit {
   fetchPreguntas() {
     const body = { tema: this.categoria };
     this.http
-      .post<any>('https://liked-walleye-trusting.ngrok-free.app/obtenerPregunta', body)
+      .post<any>('https://next-eel-firmly.ngrok-free.app/obtenerPregunta', body)
       .subscribe({
         next: (response) => {
           this.preguntas = response.preguntas;
@@ -112,7 +112,7 @@ export class JuegoComponent implements OnInit {
       newscore: this.respuestasCorrectas.toString(),
     };
 
-    this.http.post('https://liked-walleye-trusting.ngrok-free.app/registerPuntaje', body).subscribe({
+    this.http.post('https://next-eel-firmly.ngrok-free.app/registerPuntaje', body).subscribe({
       next: () => {
         console.log('Puntaje registrado con éxito.');
       },

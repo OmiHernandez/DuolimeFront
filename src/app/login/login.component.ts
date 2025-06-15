@@ -42,11 +42,12 @@ export class LoginComponent {
     const { username, password } = this.loginForm.value;
 
     this.http
-      .post('https://liked-walleye-trusting.ngrok-free.app/getProfile', { username, password })
+      .post('https://next-eel-firmly.ngrok-free.app/getProfile', { username, password })
       .subscribe({
         next: (response: any) => {
+          
           if (response) {
-            const { id } = response.$; // Asegúrate de que el backend devuelva el id
+            const { id } = response;
             Swal.fire({
               icon: 'success',
               title: 'Inicio de sesión exitoso',
