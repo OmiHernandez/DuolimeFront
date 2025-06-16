@@ -81,18 +81,26 @@ export class PuntajeComponent implements OnInit {
 
       const scorePromises = this.categorias.map(async (category) => {
         try {
-          const scores: UserScore[] = await lastValueFrom(
-            this.http.post<UserScore[]>(
+          const scoresFromBackend: { username: string, score_total_por_categoria: number }[] = await lastValueFrom(
+            this.http.post<{ username: string, score_total_por_categoria: number }[]>(
               'https://roughly-expert-rabbit.ngrok-free.app/getScoresByCategory',
               { categoryId: category.id }
             )
           );
 
-          scores.forEach((scoreEntry, index) => {
+          const mappedScores: UserScore[] = scoresFromBackend.map(scoreEntry => ({
+            username: scoreEntry.username,
+            score: scoreEntry.score_total_por_categoria,
+            position: undefined
+          }));
+
+          mappedScores.sort((a, b) => b.score - a.score);
+          mappedScores.forEach((scoreEntry, index) => {
             scoreEntry.position = index + 1;
           });
 
-          this.allCategoryScores[category.id] = scores;
+          this.allCategoryScores[category.id] = mappedScores;
+
         } catch (error) {
           console.error(`Error al obtener puntajes para la categoría ${category.name} (ID: ${category.id}):`, error);
           this.allCategoryScores[category.id] = [];
