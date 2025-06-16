@@ -80,6 +80,29 @@ export class CategoriesComponent implements AfterViewInit, OnInit {
     }
   }
 
+  private categoryImages: { [key: string]: string } = {
+    'Física': '../assets/nuevasimg/fisica.png',
+    'Matemáticas': '../assets/nuevasimg/matematicas.png',
+    'Química': '../assets/nuevasimg/quimica.png',
+    'Astronomía': '../assets/nuevasimg/astronomia.png',
+    'Geometría': '../assets/nuevasimg/geometria.png',
+    'Electromagnetismo': '../assets/nuevasimg/electromagnetismo.png',
+    'Mecánica Cuántica': '../assets/nuevasimg/mecanicacuantica.png',
+    'Cosmología': '../assets/nuevasimg/cosmologia.png',
+    'Programación': '../assets/nuevasimg/programacion.png',
+    'Genética': '../assets/nuevasimg/genetica.png',
+    'Robótica': '../assets/nuevasimg/robotica.png',
+    'Ecología': '../assets/nuevasimg/ecologia.png',
+    'Nanotecnología': '../assets/nuevasimg/nanotecnologia.png',
+    'Arte': '../assets/nuevasimg/arte.png',
+    'Geografía': '../assets/nuevasimg/geografia.png',
+    'Cine': '../assets/nuevasimg/cine.png',
+    'Cultura pop': '../assets/nuevasimg/cultura.png',
+    'Anime': '../assets/nuevasimg/anime.png',
+    'Musica': '../assets/nuevasimg/musica.png',
+    'Libros': '../assets/nuevasimg/libros.png',
+  };
+
   ngOnInit(): void {
     this.getCategories();
   }
@@ -101,7 +124,7 @@ export class CategoriesComponent implements AfterViewInit, OnInit {
               id: category.id,
               name: category.name || 'Sin nombre',
               description: 'Descripción no disponible',
-              image: '../assets/img/vi.jpg',
+              image: this.categoryImages[category.name],
               bgColor: this.getRandomColor(),
             };
           });
