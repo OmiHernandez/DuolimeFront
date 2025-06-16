@@ -1,0 +1,161 @@
+/* Fondo y contenedor principal */
+:host {
+  display: block;
+  background-color: #1a0033; /* Morado oscuro base */
+  
+}
+
+body {
+  background-color: #1a0033 !important; /* Fuerza el color de fondo */
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  background-color: transparent;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  min-height: calc(100vh - 4rem); /* Resta el padding */
+}
+
+.card {
+  background-color: #2d0a4d; /* Morado más claro */
+  border: 1px solid #6a3093; /* Borde morado */
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.card-header {
+  background: linear-gradient(135deg, #8a2be2 0%, #6a3093 100%); /* Degradado morado */
+  border-bottom: 2px solid #9d4edd; /* Borde neon */
+  box-shadow: 0 0 15px rgba(157, 78, 221, 0.5); /* Sombra neon */
+}
+
+/* Avatar */
+.avatar-circle {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, #9d4edd 0%, #6a3093 100%);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(157, 78, 221, 0.7);
+  border: 2px solid #c77dff;
+}
+
+.initials {
+  text-transform: uppercase;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+/* Estadísticas */
+.stat-card {
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #3c096c; /* Morado oscuro */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(157, 78, 221, 0.3);
+}
+
+.stat-value {
+  font-weight: bold;
+  color: #e0aaff; /* Morado neon claro */
+  margin-bottom: 5px;
+  font-size: 1.5rem;
+  text-shadow: 0 0 5px rgba(224, 170, 255, 0.3);
+}
+
+.stat-label {
+  color: #c77dff; /* Morado neon medio */
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+
+/* Sección de categorías */
+.section-title {
+  border-bottom: 2px solid #7b2cbf; /* Morado */
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+  color: #e0aaff; /* Morado neon claro */
+  text-shadow: 0 0 5px rgba(224, 170, 255, 0.2);
+}
+
+.category-score-item {
+  margin-bottom: 15px;
+}
+
+.category-name {
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #c77dff; /* Morado neon medio */
+}
+
+.progress {
+  height: 25px;
+  border-radius: 12px;
+  background-color: #3c096c; /* Morado oscuro */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #9d4edd 0%, #c77dff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 500;
+  box-shadow: 0 0 10px rgba(157, 78, 221, 0.5);
+  border-radius: 12px;
+}
+
+/* Botones */
+.btn-primary {
+  background-color: #7b2cbf;
+  border-color: #9d4edd;
+  color: white;
+  box-shadow: 0 0 10px rgba(157, 78, 221, 0.5);
+}
+
+.btn-primary:hover {
+  background-color: #9d4edd;
+  border-color: #c77dff;
+  box-shadow: 0 0 15px rgba(157, 78, 221, 0.7);
+}
+
+.btn-outline-primary {
+  border-color: #7b2cbf;
+  color: #e0aaff;
+}
+
+.btn-outline-primary:hover {
+  background-color: #3c096c;
+  border-color: #9d4edd;
+  color: white;
+}
+
+/* Textos */
+h2, h3, h4 {
+  color: #e0aaff; /* Morado neon claro */
+}
+
+p {
+  color: #c77dff; /* Morado neon medio */
+}
+
+.text-muted {
+  color: #9d4edd !important; /* Morado más claro */
+}
+
+/* Spinner de carga */
+.spinner-border.text-primary {
+  color: #9d4edd !important;
+}

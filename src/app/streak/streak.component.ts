@@ -71,7 +71,7 @@ export class StreakComponent implements OnInit {
   async updateRacha(userId: string): Promise<void> {
     try {
       const response: any = await lastValueFrom(
-        this.http.post('https://roughly-expert-rabbit.ngrok-free.app/updateRacha', { id: userId })
+        this.http.post(' https://liked-walleye-trusting.ngrok-free.app/updateRacha', { id: userId })
       );
       this.racha = parseInt(response, 10);
     } catch (error) {
@@ -83,7 +83,7 @@ export class StreakComponent implements OnInit {
   async getStreakRankings(): Promise<void> {
     try {
       const response: any = await lastValueFrom(
-        this.http.post('https://roughly-expert-rabbit.ngrok-free.app/getStreakRanking', {})
+        this.http.post(' https://liked-walleye-trusting.ngrok-free.app/getStreakRanking', {})
       );
 
       console.log('Respuesta del servidor para ranking de rachas:', response);

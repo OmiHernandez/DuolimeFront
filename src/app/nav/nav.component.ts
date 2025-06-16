@@ -52,12 +52,13 @@ export class NavComponent implements OnInit {
 
     try {
       const response: any = await lastValueFrom(
-        this.http.post('https://roughly-expert-rabbit.ngrok-free.app/getRanking', {})
+        this.http.post('https://liked-walleye-trusting.ngrok-free.app/getRanking', {})
       );
 
       if (Array.isArray(response)) {
         const globalRanking = response.map(userEntry => ({
           username: userEntry.username,
+          Usuario_id: userEntry.Usuario_id,
           totalScore: parseInt(userEntry.total_score_global) || 0
         }));
 
@@ -84,6 +85,12 @@ export class NavComponent implements OnInit {
       console.error('Error al obtener el ranking para el NavComponent:', error);
       this.userRankingPosition = null;
       this.userTotalScore = null;
+    }
+  }
+
+  viewMyProfile(): void {
+    if (this.userId) {
+      this.router.navigate(['/user-profile', this.userId]);
     }
   }
 

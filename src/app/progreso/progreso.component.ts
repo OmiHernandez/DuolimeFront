@@ -66,7 +66,7 @@ export class ProgresoComponent implements OnInit {
   async loadProgressData(): Promise<void> {
     try {
       const categoriesResponse: any = await lastValueFrom(
-        this.http.post('https://roughly-expert-rabbit.ngrok-free.app/getCategories', {})
+        this.http.post(' https://liked-walleye-trusting.ngrok-free.app/getCategories', {})
       );
 
       this.categorias = categoriesResponse.map((cat: any) => ({
@@ -78,7 +78,7 @@ export class ProgresoComponent implements OnInit {
         try {
           const progressResponse: any = await lastValueFrom(
             this.http.post(
-              'https://roughly-expert-rabbit.ngrok-free.app/getProgress',
+              ' https://liked-walleye-trusting.ngrok-free.app/getProgress',
               { id: this.userId, category: category.id }
             )
           );

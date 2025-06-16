@@ -13,14 +13,23 @@ import { lastValueFrom } from 'rxjs';
   styleUrls: ['./ranking.component.css']
 })
 export class RankingComponent implements OnInit {
-  rankingGlobal: { nombre: string, aciertosTotales: number }[] = [];
-  rankingTopPlayers: { nombre: string, aciertosTotales: number }[] = [];
+  rankingGlobal: { username: string, Usuario_id: string, total_score_global: number }[] = [];
+  rankingTopPlayers: { username: string, Usuario_id: string, total_score_global: number }[] = [];
   isLoggedIn: boolean = false;
 
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.checkLoginStatus();
+  }
+
+    viewUserProfile(userId: string, username: string): void {
+    if (!this.isLoggedIn) {
+      this.showLoginAlert();
+      return;
+    }
+    
+    this.router.navigate(['/user-profile', userId]);
   }
 
   checkLoginStatus(): void {
@@ -53,20 +62,22 @@ export class RankingComponent implements OnInit {
     });
   }
 
-  async getRankingGlobal(): Promise<void> {
+    async getRankingGlobal(): Promise<void> {
     try {
       const response: any = await lastValueFrom(
-        this.http.post('https://roughly-expert-rabbit.ngrok-free.app/getRanking', {})
+        this.http.post('https://liked-walleye-trusting.ngrok-free.app/getRanking', {})
       );
 
       console.log('Respuesta del servidor para el ranking:', response);
 
       if (Array.isArray(response)) {
         this.rankingGlobal = response.map(userEntry => ({
-          nombre: userEntry.username,
-          aciertosTotales: parseInt(userEntry.total_score_global) || 0
+          username: userEntry.username,
+          Usuario_id: userEntry.Usuario_id,
+          total_score_global: parseInt(userEntry.total_score_global) || 0
         }));
-        this.rankingGlobal.sort((a, b) => b.aciertosTotales - a.aciertosTotales);
+        
+        this.rankingGlobal.sort((a, b) => b.total_score_global - a.total_score_global);
         this.rankingTopPlayers = this.rankingGlobal.slice(0, 3);
 
       } else {
@@ -79,10 +90,6 @@ export class RankingComponent implements OnInit {
           text: 'No se encontraron datos de ranking o el formato es inesperado.',
         });
       }
-
-      console.log('Ranking Global procesado:', this.rankingGlobal);
-      console.log('Ranking Top Jugadores procesado:', this.rankingTopPlayers);
-
     } catch (error) {
       console.error('Error al obtener el ranking global:', error);
       this.rankingGlobal = [];

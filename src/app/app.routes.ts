@@ -9,6 +9,7 @@ import { RankingComponent } from './ranking/ranking.component';
 import { StreakComponent } from './streak/streak.component';
 import { ProgresoComponent } from './progreso/progreso.component';
 import { PopularCategoriesComponent } from './popular-categories/popular-categories.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -21,6 +22,6 @@ export const routes: Routes = [
   { path: 'popular-categories', component: PopularCategoriesComponent },
   { path: 'niveles/:categoryId/:categoryName', component: NivelesComponent },
   { path: 'juego/:categoryId/:categoryName/:level', component: JuegoComponent },
-
+  { path: 'user-profile/:userId', component: UserProfileComponent },
   { path: '**', pathMatch: 'full', redirectTo: 'home'}
 ];

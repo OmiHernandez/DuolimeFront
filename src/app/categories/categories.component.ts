@@ -86,7 +86,7 @@ export class CategoriesComponent implements AfterViewInit, OnInit {
 
   getCategories(): void {
     this.http
-      .post('https://roughly-expert-rabbit.ngrok-free.app/getCategories', {})
+      .post(' https://liked-walleye-trusting.ngrok-free.app/getCategories', {})
       .subscribe(
         (response: any) => {
           console.log(

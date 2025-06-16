@@ -1,3 +1,4 @@
+<!-- ranking.component.html -->
 <div *ngIf="isLoggedIn" class="background p-4">
   <div class="card shadow-sm mx-auto">
     <div class="card-header text-center text-white py-3">
@@ -9,8 +10,8 @@
         <ng-container *ngIf="rankingTopPlayers.length > 0; else noTopPlayers">
           <div *ngFor="let usuario of rankingTopPlayers; let i = index" class="top-player-circle d-flex flex-column justify-content-center align-items-center text-center p-2" [ngClass]="{'rank-1': i === 0, 'rank-2': i === 1, 'rank-3': i === 2}">
             <div class="position-badge mb-2">{{i + 1}}</div>
-            <div class="username-text mb-1">{{usuario.nombre}}</div>
-            <div class="score-text">{{usuario.aciertosTotales}}</div>
+            <div class="username-text mb-1">{{usuario.username}}</div>
+            <div class="score-text">{{usuario.total_score_global}}</div>
           </div>
         </ng-container>
         <ng-template #noTopPlayers>
@@ -48,10 +49,10 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let usuario of rankingGlobal; let i = index">
+                    <tr *ngFor="let usuario of rankingGlobal; let i = index" (click)="viewUserProfile(usuario.Usuario_id, usuario.username)" style="cursor: pointer;">
                       <td class="text-center">{{i + 1}}</td>
-                      <td class="text-center">{{usuario.nombre}}</td>
-                      <td class="text-center">{{usuario.aciertosTotales}}</td>
+                      <td class="text-center">{{usuario.username}}</td>
+                      <td class="text-center">{{usuario.total_score_global}}</td>
                     </tr>
                     <tr *ngIf="rankingGlobal.length === 0">
                       <td colspan="3" class="text-center text-muted">No hay datos disponibles</td>

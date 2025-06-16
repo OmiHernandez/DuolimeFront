@@ -1,3 +1,4 @@
+<!-- nav.component.html -->
 <nav class="navbar navbar-expand-lg menu">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
@@ -9,28 +10,28 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link blanco" href="home">Home</a>
+          <a class="nav-link blanco" routerLink="home">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link blanco" href="puntaje">Puntajes</a>
+          <a class="nav-link blanco" routerLink="puntaje">Puntajes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link blanco" href="ranking">Ranking</a>
+          <a class="nav-link blanco" routerLink="ranking">Ranking</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link blanco" href="racha">Racha</a>
+          <a class="nav-link blanco" routerLink="racha">Racha</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link blanco" href="progreso">Progreso</a>
+          <a class="nav-link blanco" routerLink="progreso">Progreso</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link blanco" href="popular-categories">Favoritas</a>
+          <a class="nav-link blanco" routerLink="popular-categories">Favoritas</a>
         </li>
       </ul>
 
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center" *ngIf="username">
         <li class="nav-item me-3">
-          <span class="navbar-text blanco me-2">
+          <span class="navbar-text blanco me-2" (click)="viewMyProfile()" style="cursor: pointer;">
             Bienvenido, {{ username }}
           </span>
         </li>
@@ -66,7 +67,6 @@
           Iniciar sesión
         </button>
       </div>
-
     </div>
   </div>
 </nav>
