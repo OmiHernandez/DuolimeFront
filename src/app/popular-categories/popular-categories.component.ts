@@ -31,7 +31,7 @@ export class PopularCategoriesComponent implements OnInit {
     this.isLoading = true;
     try {
       const response: any = await lastValueFrom(
-        this.http.post(' https://liked-walleye-trusting.ngrok-free.app/getPopularCategories', {})
+        this.http.post(' https://next-eel-firmly.ngrok-free.app/getPopularCategories', {})
       );
 
       console.log('Categorías populares obtenidas:', response);

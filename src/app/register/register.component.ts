@@ -32,9 +32,10 @@ export class RegisterComponent {
     .then(() => {
       // Enviar datos al backend después de un correo exitoso
       this.http
-        .post(' https://liked-walleye-trusting.ngrok-free.app/registerProfile', {
+        .post(' https://next-eel-firmly.ngrok-free.app/registerProfile', {
           username: this.nombre,
           password,
+          email: this.email
         })
         .subscribe({
           next: () => {
@@ -85,7 +86,7 @@ export class RegisterComponent {
   enviarCorreo(email: string, password: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this.http
-        .post(' https://liked-walleye-trusting.ngrok-free.app/enviarCorreo', { email, password })
+        .post(' https://next-eel-firmly.ngrok-free.app/enviarCorreo', { email, password })
         .subscribe({
           next: (response) => {
             console.log('Correo enviado:', response);

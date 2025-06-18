@@ -65,7 +65,7 @@ export class RankingComponent implements OnInit {
     async getRankingGlobal(): Promise<void> {
     try {
       const response: any = await lastValueFrom(
-        this.http.post('https://liked-walleye-trusting.ngrok-free.app/getRanking', {})
+        this.http.post('https://next-eel-firmly.ngrok-free.app/getRanking', {})
       );
 
       console.log('Respuesta del servidor para el ranking:', response);

@@ -109,7 +109,7 @@ export class CategoriesComponent implements AfterViewInit, OnInit {
 
   getCategories(): void {
     this.http
-      .post(' https://liked-walleye-trusting.ngrok-free.app/getCategories', {})
+      .post(' https://next-eel-firmly.ngrok-free.app/getCategories', {})
       .subscribe(
         (response: any) => {
           console.log(

@@ -52,7 +52,7 @@ export class NavComponent implements OnInit {
 
     try {
       const response: any = await lastValueFrom(
-        this.http.post('https://liked-walleye-trusting.ngrok-free.app/getRanking', {})
+        this.http.post('https://next-eel-firmly.ngrok-free.app/getRanking', {})
       );
 
       if (Array.isArray(response)) {

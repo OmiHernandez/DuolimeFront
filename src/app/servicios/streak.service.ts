@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class StreakService {
 
-  private apiUrl = ' https://liked-walleye-trusting.ngrok-free.app';
+  private apiUrl = ' https://next-eel-firmly.ngrok-free.app';
 
   constructor(private http: HttpClient) {}
 

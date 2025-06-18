@@ -37,7 +37,7 @@ export class UserProfileComponent implements OnInit {
 
     try {
       const response: any = await lastValueFrom(
-        this.http.post('https://liked-walleye-trusting.ngrok-free.app/getUserProfile', { id: userId })
+        this.http.post('https://next-eel-firmly.ngrok-free.app/getUserProfile', { id: userId })
       );
 
       if (response) {

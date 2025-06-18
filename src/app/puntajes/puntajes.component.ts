@@ -72,7 +72,7 @@ export class PuntajeComponent implements OnInit {
   async getCategoriesAndAllScores(): Promise<void> {
     try {
       const categoriesResponse: any = await lastValueFrom(
-        this.http.post(' https://liked-walleye-trusting.ngrok-free.app/getCategories', {})
+        this.http.post(' https://next-eel-firmly.ngrok-free.app/getCategories', {})
       );
       this.categorias = categoriesResponse.map((category: any) => ({
         id: category.id,
@@ -83,7 +83,7 @@ export class PuntajeComponent implements OnInit {
         try {
           const scoresFromBackend: { username: string, score_total_por_categoria: number }[] = await lastValueFrom(
             this.http.post<{ username: string, score_total_por_categoria: number }[]>(
-              ' https://liked-walleye-trusting.ngrok-free.app/getScoresByCategory',
+              ' https://next-eel-firmly.ngrok-free.app/getScoresByCategory',
               { categoryId: category.id }
             )
           );

@@ -107,7 +107,7 @@ export class NivelesComponent implements OnInit {
 
   getUserProgress(userId: string, categoryId: string): void {
     this.http
-      .post(' https://liked-walleye-trusting.ngrok-free.app/getProgress', {
+      .post(' https://next-eel-firmly.ngrok-free.app/getProgress', {
         id: userId,
         category: categoryId,
       })

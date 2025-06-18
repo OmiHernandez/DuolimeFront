@@ -84,7 +84,7 @@ export class JuegoComponent implements OnInit, OnDestroy {
   fetchPreguntas() {
     const body = { tema: this.categoryName };
     this.http
-      .post<any>(' https://liked-walleye-trusting.ngrok-free.app/obtenerPregunta', body)
+      .post<any>(' https://next-eel-firmly.ngrok-free.app/obtenerPregunta', body)
       .subscribe({
         next: (response) => {
           this.preguntas = response.preguntas;
@@ -176,7 +176,7 @@ export class JuegoComponent implements OnInit, OnDestroy {
       };
       await lastValueFrom(
         this.http.post(
-          ' https://liked-walleye-trusting.ngrok-free.app/registerPuntaje',
+          ' https://next-eel-firmly.ngrok-free.app/registerPuntaje',
           puntajeBody
         )
       );
@@ -199,7 +199,7 @@ export class JuegoComponent implements OnInit, OnDestroy {
         try {
           const progressResponse: any = await lastValueFrom(
             this.http.post(
-              ' https://liked-walleye-trusting.ngrok-free.app/getProgress',
+              ' https://next-eel-firmly.ngrok-free.app/getProgress',
               { id: this.userId, category: this.categoryId }
             )
           );
@@ -219,7 +219,7 @@ export class JuegoComponent implements OnInit, OnDestroy {
           };
           await lastValueFrom(
             this.http.post(
-              ' https://liked-walleye-trusting.ngrok-free.app/registerProgress',
+              ' https://next-eel-firmly.ngrok-free.app/registerProgress',
               progressBody
             )
           );
